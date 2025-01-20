@@ -261,7 +261,7 @@ function gameOver() {
   for (let i = 1; i < snake.length; i++) {
     if (head[0] === snake[i][0] && head[1] === snake[i][1]) {
       noLoop(); // Stop the game
-      alert("Game Over! Snake hit itself.");
+      //alert("Game Over! Snake hit itself.");
     }
 }
 
@@ -307,7 +307,7 @@ function addGoldFoil(graphics, count) {
 }
 
 function createArrowButtons(canvasX, canvasY) {
-  const buttonSize = 30; // Adjust size for the buttons
+  const buttonSize = 40; // Adjust size for the buttons
   const offset = 20; // Distance between buttons
 
   // Common styles for all buttons
@@ -328,25 +328,25 @@ function createArrowButtons(canvasX, canvasY) {
 
   // Create UP button
   arrowButtons.up = createButton('▲');
-  arrowButtons.up.position(canvasX + 235 + buttonSize / 2, canvasY - 70);
+  arrowButtons.up.position(canvasX + 235 + buttonSize / 2, canvasY - 110);
   applyStyles(arrowButtons.up, commonStyles);
   arrowButtons.up.mousePressed(() => (direction = [0, -1]));
 
   // Create DOWN button
   arrowButtons.down = createButton('▼');
-  arrowButtons.down.position(canvasX + 235 + buttonSize / 2, canvasY - 30);
+  arrowButtons.down.position(canvasX + 235 + buttonSize / 2, canvasY - 50);
   applyStyles(arrowButtons.down, commonStyles);
   arrowButtons.down.mousePressed(() => (direction = [0, 1]));
 
   // Create LEFT button
   arrowButtons.left = createButton('◀');
-  arrowButtons.left.position(canvasX + 230 + offset - buttonSize, canvasY - 50);
+  arrowButtons.left.position(canvasX + 230 + offset - buttonSize, canvasY - 80);
   applyStyles(arrowButtons.left, commonStyles);
   arrowButtons.left.mousePressed(() => (direction = [-1, 0]));
 
   // Create RIGHT button
   arrowButtons.right = createButton('▶');
-  arrowButtons.right.position(canvasX + 260 + offset, canvasY - 50);
+  arrowButtons.right.position(canvasX + 278 + offset, canvasY - 80);
   applyStyles(arrowButtons.right, commonStyles);
   arrowButtons.right.mousePressed(() => (direction = [1, 0]));
 }
@@ -431,7 +431,8 @@ function windowResized() {
 }
 
 
-// Symbol Functions
+
+// Symbol
 
 function drawSmiley(x, y, size) {
 	size *= symbolSizeMultiplier; 
