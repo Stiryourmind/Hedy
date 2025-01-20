@@ -90,6 +90,9 @@ function setup() {
 }
 
 function draw() {
+  // Draw the background outside the canvas as black
+  //background(50);
+	
 
   // Draw the red canvas
   push();
@@ -129,6 +132,11 @@ function draw() {
   // Check for collisions (with items or itself)
   checkCollisions();
 	
+	  // Display the score at the bottom of the canvas
+  //fill(255);
+  //textSize(16);
+  //textAlign(CENTER);
+  //text(`Symbols Eaten: ${score}`, width / 2, height - 10);
 }
 
 function drawSnake() {
@@ -270,7 +278,8 @@ function generateNonOverlappingItem() {
 }
 
 
-// Gold Foil
+
+// Add gold foil effects
 function addGoldFoil(graphics, count) {
   for (let i = 0; i < count; i++) {
     let x = random(margin, width - margin);
@@ -291,100 +300,83 @@ function addGoldFoil(graphics, count) {
   }
 }
 
-function createArrowButtons(saveButtonX, saveButtonY) {
-  const buttonSize = 40; // Size of the triangle buttons
-  const spacing = 10; // Spacing between the Save button and the arrow buttons
+function createArrowButtons(canvasX, canvasY) {
+  const buttonSize = 30; // Adjust size for the buttons
+  const offset = 20; // Distance between buttons
 
   // Common styles for all buttons
   const commonStyles = {
-    width: '0', // Needed for triangle shapes
-    height: '0', // Needed for triangle shapes
-    background: 'none', 
-    border: 'none', 
-    padding: '0',
-    position: 'absolute', // Ensure proper placement
-    cursor: 'pointer', // Show pointer cursor for interactivity
+    width: `${buttonSize}px`,
+    height: `${buttonSize}px`,
+    background: 'rgb(250, 50, 0)',
+    border: '2px solid rgb(255, 215, 0)',
+    borderRadius: '8px',
+    textAlign: 'center',
+    fontSize: `${buttonSize * 0.5}px`, // Font size based on button size
+    color: 'white',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    cursor: 'pointer',
   };
 
-  //UP button
-  arrowButtons.up = createButton('');
-  arrowButtons.up.position(saveButtonX + buttonSize + spacing, saveButtonY - buttonSize - spacing);
-  arrowButtons.up.style('border-left', `${buttonSize}px solid transparent`);
-  arrowButtons.up.style('border-right', `${buttonSize}px solid transparent`);
-  arrowButtons.up.style('border-bottom', `${buttonSize}px solid gold`);
+  // Create UP button
+  arrowButtons.up = createButton('▲');
+  arrowButtons.up.position(canvasX + 125 + buttonSize / 2, canvasY - 70);
   applyStyles(arrowButtons.up, commonStyles);
-  arrowButtons.up.mousePressed(() => {
-    direction = [0, -1]; // Move snake up
-  });
+  arrowButtons.up.mousePressed(() => (direction = [0, -1]));
 
-  //DOWN button
-  arrowButtons.down = createButton('');
-  arrowButtons.down.position(saveButtonX + buttonSize + spacing, saveButtonY + buttonSize + spacing);
-  arrowButtons.down.style('border-left', `${buttonSize}px solid transparent`);
-  arrowButtons.down.style('border-right', `${buttonSize}px solid transparent`);
-  arrowButtons.down.style('border-top', `${buttonSize}px solid gold`);
+  // Create DOWN button
+  arrowButtons.down = createButton('▼');
+  arrowButtons.down.position(canvasX + 125 + buttonSize / 2, canvasY - 30);
   applyStyles(arrowButtons.down, commonStyles);
-  arrowButtons.down.mousePressed(() => {
-    direction = [0, 1]; // Move snake down
-  });
+  arrowButtons.down.mousePressed(() => (direction = [0, 1]));
 
-  //LEFT button
-  arrowButtons.left = createButton('');
-  arrowButtons.left.position(saveButtonX, saveButtonY);
-  arrowButtons.left.style('border-top', `${buttonSize}px solid transparent`);
-  arrowButtons.left.style('border-bottom', `${buttonSize}px solid transparent`);
-  arrowButtons.left.style('border-right', `${buttonSize}px solid gold`);
+  // Create LEFT button
+  arrowButtons.left = createButton('◀');
+  arrowButtons.left.position(canvasX + 120 + offset - buttonSize, canvasY - 50);
   applyStyles(arrowButtons.left, commonStyles);
-  arrowButtons.left.mousePressed(() => {
-    direction = [-1, 0]; // Move snake left
-  });
+  arrowButtons.left.mousePressed(() => (direction = [-1, 0]));
 
-  //RIGHT button
-  arrowButtons.right = createButton('');
-  arrowButtons.right.position(saveButtonX + 2 * buttonSize + 2 * spacing, saveButtonY);
-  arrowButtons.right.style('border-top', `${buttonSize}px solid transparent`);
-  arrowButtons.right.style('border-bottom', `${buttonSize}px solid transparent`);
-  arrowButtons.right.style('border-left', `${buttonSize}px solid gold`);
+  // Create RIGHT button
+  arrowButtons.right = createButton('▶');
+  arrowButtons.right.position(canvasX + 150 + offset, canvasY - 50);
   applyStyles(arrowButtons.right, commonStyles);
-  arrowButtons.right.mousePressed(() => {
-    direction = [1, 0]; // Move snake right
-  });
+  arrowButtons.right.mousePressed(() => (direction = [1, 0]));
 }
 
-//Helper function to apply styles
+// Helper function to apply styles
 function applyStyles(button, styles) {
   for (const [key, value] of Object.entries(styles)) {
     button.style(key, value);
   }
 }
 
-//keyPressed function
 function keyPressed() {
   if (keyCode === UP_ARROW && direction[1] === 0) {
-    direction = [0, -1]; // Move snake up
-    arrowButtons.up.style('border-bottom', `${40}px solid #DAA520`); // Darker gold
+    direction = [0, -1];
+    arrowButtons.up.style('background', 'rgb(180,36,0)');
   } else if (keyCode === DOWN_ARROW && direction[1] === 0) {
-    direction = [0, 1]; // Move snake down
-    arrowButtons.down.style('border-top', `${40}px solid #DAA520`); // Darker gold
+    direction = [0, 1];
+    arrowButtons.down.style('background', 'rgb(180,36,0)');
   } else if (keyCode === LEFT_ARROW && direction[0] === 0) {
-    direction = [-1, 0]; // Move snake left
-    arrowButtons.left.style('border-right', `${40}px solid #DAA520`); // Darker gold
+    direction = [-1, 0];
+    arrowButtons.left.style('background', 'rgb(180,36,0)');
   } else if (keyCode === RIGHT_ARROW && direction[0] === 0) {
-    direction = [1, 0]; // Move snake right
-    arrowButtons.right.style('border-left', `${40}px solid #DAA520`); // Darker gold
+    direction = [1, 0];
+    arrowButtons.right.style('background', 'rgb(180,36,0)');
   }
 }
 
-//keyReleased function
 function keyReleased() {
   if (keyCode === UP_ARROW) {
-    arrowButtons.up.style('border-bottom', `${40}px solid gold`); // Original gold
+    arrowButtons.up.style('background', 'rgb(250, 50, 0)');
   } else if (keyCode === DOWN_ARROW) {
-    arrowButtons.down.style('border-top', `${40}px solid gold`); // Original gold
+    arrowButtons.down.style('background', 'rgb(250, 50, 0)');
   } else if (keyCode === LEFT_ARROW) {
-    arrowButtons.left.style('border-right', `${40}px solid gold`); // Original gold
+    arrowButtons.left.style('background', 'rgb(250, 50, 0)');
   } else if (keyCode === RIGHT_ARROW) {
-    arrowButtons.right.style('border-left', `${40}px solid gold`); // Original gold
+    arrowButtons.right.style('background', 'rgb(250, 50, 0)');
   } else if (key === 'S' || key === 's') {
     if (!isLooping()) {
       saveCanvas('snake_game', 'png'); // Save the canvas as an image
@@ -403,10 +395,6 @@ function windowResized() {
   saveButton.position(canvasX + 10, canvasY - 40);
   scoreDisplay.position(canvasX + 10, canvasY + 10);
 }
-
-
-
-
 
 
 // Symbol Functions
