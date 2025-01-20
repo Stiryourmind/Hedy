@@ -59,7 +59,7 @@ function setup() {
 	
 	// Create the save image button below the canvas
   saveButton = createButton('Save Image');
-	saveButton.position(canvasX + 10, canvasY - 40); // Adjusted position relative to the canvas
+	saveButton.position(canvasX + 10, canvasY - 30); // Adjusted position relative to the canvas
   saveButton.mousePressed(() => {
     if (!isLooping()) {
       saveCanvas('snake_game', 'png');
@@ -87,6 +87,12 @@ function setup() {
       console.error('Error: scoreDisplay is undefined.');
     }
   };
+	
+	const restartButton = createButton('Restart');
+  restartButton.position(canvasX + 120, canvasY - 30); 
+  restartButton.mousePressed(restartGame);
+
+	
 }
 
 function draw() {
@@ -322,25 +328,25 @@ function createArrowButtons(canvasX, canvasY) {
 
   // Create UP button
   arrowButtons.up = createButton('▲');
-  arrowButtons.up.position(canvasX + 125 + buttonSize / 2, canvasY - 70);
+  arrowButtons.up.position(canvasX + 235 + buttonSize / 2, canvasY - 70);
   applyStyles(arrowButtons.up, commonStyles);
   arrowButtons.up.mousePressed(() => (direction = [0, -1]));
 
   // Create DOWN button
   arrowButtons.down = createButton('▼');
-  arrowButtons.down.position(canvasX + 125 + buttonSize / 2, canvasY - 30);
+  arrowButtons.down.position(canvasX + 235 + buttonSize / 2, canvasY - 30);
   applyStyles(arrowButtons.down, commonStyles);
   arrowButtons.down.mousePressed(() => (direction = [0, 1]));
 
   // Create LEFT button
   arrowButtons.left = createButton('◀');
-  arrowButtons.left.position(canvasX + 120 + offset - buttonSize, canvasY - 50);
+  arrowButtons.left.position(canvasX + 230 + offset - buttonSize, canvasY - 50);
   applyStyles(arrowButtons.left, commonStyles);
   arrowButtons.left.mousePressed(() => (direction = [-1, 0]));
 
   // Create RIGHT button
   arrowButtons.right = createButton('▶');
-  arrowButtons.right.position(canvasX + 150 + offset, canvasY - 50);
+  arrowButtons.right.position(canvasX + 260 + offset, canvasY - 50);
   applyStyles(arrowButtons.right, commonStyles);
   arrowButtons.right.mousePressed(() => (direction = [1, 0]));
 }
@@ -383,6 +389,34 @@ function keyReleased() {
     }
 }
 }
+
+function restartGame() {
+  // Reset snake position and direction
+  snake = [[20, 8]];
+  direction = [0, 0];
+
+  // Reset items and symbols
+  items = [];
+  eatenSymbols = [];
+  score = 0;
+
+  // Regenerate initial symbols
+  for (let i = 0; i < 5; i++) {
+    items.push(generateNonOverlappingItem());
+  }
+	
+  // Regenerate gold foil graphics
+  goldFoilGraphics = createGraphics(width, height);
+  const goldFoilCount = Math.floor(random(200, 500)); // Randomize the number of gold foil pieces
+  addGoldFoil(goldFoilGraphics, goldFoilCount);
+
+  // Reset the score display
+  updateScore();
+
+  // Restart the game loop
+  loop();
+}
+
 
 
 function windowResized() {
