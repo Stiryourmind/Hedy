@@ -25,7 +25,7 @@ function preload() {
 }
 
 function setup() {
-  const canvas = createCanvas(300, 500);
+  const canvas = createCanvas(windowWidth, windowHeight);
 canvas.position(windowWidth / 2 - width / 2, windowHeight / 2 - height / 2);
 cellSize = height / gridSizeY; // Cell size based on the grid width
 
