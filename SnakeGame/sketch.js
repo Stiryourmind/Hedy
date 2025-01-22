@@ -26,7 +26,7 @@ function preload() {
 
 function setup() {
   const canvas = createCanvas(300, 500);
-canvas.position(windowWidth -width) / 2, (windowHeight - height) / 2);
+canvas.position(windowWidth / 2 - width / 2, windowHeight / 2 - height / 2);
 cellSize = height / gridSizeY; // Cell size based on the grid width
 
 // Initialize the snake in the center of the grid
@@ -62,18 +62,16 @@ cellSize = height / gridSizeY; // Cell size based on the grid width
 	
 	// Create the save image button below the canvas
   saveButton = createButton('Save Image');
-	//saveButton.position(canvasX - 120, canvasY + 150); 
+	saveButton.position(canvasX - 120, canvasY + 150); 
   saveButton.mousePressed(() => {
     if (!isLooping()) {
       saveCanvas('snake_game', 'png');
     }
   });
-	
- //positionButtons(canvas.position().x, canvas.position().y);
-//createArrowButtons(canvas.position().x, canvas.position().y);
+
 	
   // scoreDisplay
-	scoreDisplay = createDiv(`Good Luck + ${score}`);
+	scoreDisplay = createDiv(`祝福 + ${score}`);
 	scoreDisplay.style('font-size', '16px');
 		scoreDisplay.style('font-weight', 'bold');
 		scoreDisplay.style('color', 'rgb(255, 215, 0)');
@@ -83,7 +81,7 @@ cellSize = height / gridSizeY; // Cell size based on the grid width
 // Update score function
   window.updateScore = () => {
     if (scoreDisplay) {
-      scoreDisplay.html(`Good Luck + ${score}`);
+      scoreDisplay.html(`祝福 + ${score}`);
     } else {
       console.error('Error: scoreDisplay is undefined.');
     }
@@ -91,18 +89,8 @@ cellSize = height / gridSizeY; // Cell size based on the grid width
 
 // restart   	
 const restartButton = createButton('Restart');
-  //restartButton.position(canvasX - 110, canvasY + 200); 
+  restartButton.position(canvasX - 110, canvasY + 200); 
   restartButton.mousePressed(restartGame);
-}
-
-function positionButtons(canvasX, canvasY) {
-    const buttonHeight = height * 0.05; // Size based on canvas height
-
-    // Position the save button
-    saveButton.position(canvasX - buttonHeight * 2, canvasY + buttonHeight * 2);
-
-    // Position the restart button
-    restartButton.position(canvasX - buttonHeight * 2, canvasY + buttonHeight * 3);
 }
 
 
@@ -333,7 +321,7 @@ function addGoldFoil(graphics, count) {
 }
 
 function createArrowButtons(canvasX, canvasY) {
-  const buttonSize = height * 0.05; // Adjust size for the buttons
+  const buttonSize = 40; // Adjust size for the buttons
   const offset = 20; // Distance between buttons
 
   // Common styles for all buttons
@@ -447,23 +435,26 @@ function restartGame() {
 }
 
 
+
 function windowResized() {
     let newWidth = windowWidth;
-    let newHeight = newWidth / aspectRatio;
+    let newHeight = windowWidth / aspectRatio; 
 
     if (newHeight > windowHeight) {
         newHeight = windowHeight;
-        newWidth = windowHeight * aspectRatio;
+        newWidth = windowHeight * aspectRatio; 
     }
 
     resizeCanvas(newWidth, newHeight);
-    cellSize = height / gridSizeY; // Update cell size based on new height
+    cellSize = height / gridSizeY; // Update cell size based on new width
 
-    // Update positions of buttons
-    positionButtons((windowWidth - newWidth) / 2, (windowHeight - newHeight) / 2);
-    saveButton.position((windowWidth - saveButton.width) / 2, newHeight - saveButton.height - 10);
-    scoreDisplay.position((windowWidth - scoreDisplay.width) / 2, 10);
+    // Update positions of the save button and score display
+    const canvasX = width;
+    const canvasY = height;
+    saveButton.position(canvasX + 10, canvasY - 40);
+    scoreDisplay.position(canvasX + 10, canvasY + 10);
 }
+
 
 
 // Symbol Functions
