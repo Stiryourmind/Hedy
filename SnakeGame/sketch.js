@@ -83,7 +83,7 @@ createArrowButtons(canvas.position().x, canvas.position().y);
 // Update score function
   window.updateScore = () => {
     if (scoreDisplay) {
-      scoreDisplay.html(`祝福 + ${score}`);
+      scoreDisplay.html(`Good Luck + ${score}`);
     } else {
       console.error('Error: scoreDisplay is undefined.');
     }
