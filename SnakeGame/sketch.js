@@ -1,8 +1,8 @@
 let aspectRatio = 300 / 500; 
-let snake = [[20, 8]]; // Snake's initial position (center of the grid)
+let snake = []; // Snake's initial position (center of the grid)
 let direction = [0, 0]; // Initial direction: no movement
-let gridSizeX = 40; // Total number of cells along the width
-let gridSizeY = 16; // Total number of cells along the height
+let gridSizeX = 15; // Total number of cells along the width
+let gridSizeY = 25; // Total number of cells along the height
 let cellSize; // Size of each cell
 let symbols = []; // Array to store functions to draw symbols
 let items = []; // Array to store active symbols on the canvas
@@ -26,12 +26,14 @@ function preload() {
 
 function setup() {
   const canvas = createCanvas(300, 500);
-	canvas.position(windowWidth / 2 - width / 2, windowHeight / 2 - height / 2);
+canvas.position(windowWidth / 2 - width / 2, windowHeight / 2 - height / 2);
+cellSize = width / gridSizeX; // Cell size based on the grid width
 
-	//createArrowButtons(canvasX, canvasY);
-  
-	cellSize = width / gridSizeX; // Cell size based on the grid width
-
+// Initialize the snake in the center of the grid
+  const startX = floor(gridSizeX / 2); // Center horizontally
+  const startY = floor(gridSizeY / 2); // Center vertically
+  snake = [[startX, startY]]; // Snake starts as a single segment
+	
   // Add your symbols
   symbols.push(drawSmiley); // Smiley face
   symbols.push(drawGoldCoin); // Gold coin
@@ -60,7 +62,7 @@ function setup() {
 	
 	// Create the save image button below the canvas
   saveButton = createButton('Save Image');
-	saveButton.position(canvasX + 10, canvasY - 40); // Adjusted position relative to the canvas
+	saveButton.position(canvasX - 120, canvasY + 150); 
   saveButton.mousePressed(() => {
     if (!isLooping()) {
       saveCanvas('snake_game', 'png');
@@ -68,33 +70,31 @@ function setup() {
   });
 
 	
-  // Safeguard: Create the score display if it doesn't exist
-  if (!scoreDisplay) {
-    scoreDisplay = createDiv(`祝福 + ${score}`);
-    scoreDisplay.style('font-size', '16px');
+  // scoreDisplay
+	scoreDisplay = createDiv(`祝福 + ${score}`);
+	scoreDisplay.style('font-size', '16px');
 		scoreDisplay.style('font-weight', 'bold');
 		scoreDisplay.style('color', 'rgb(255, 215, 0)');
-    scoreDisplay.style('text-align', 'center');
-  }
+	scoreDisplay.style('text-align', 'center');
+	scoreDisplay.position(canvasX + 10, canvasY + 10); 
 
-  // Position the score display
-  scoreDisplay.position(canvasX + 10, canvasY + 10);
-
-	// Update score function
+// Update score function
   window.updateScore = () => {
     if (scoreDisplay) {
       scoreDisplay.html(`祝福 + ${score}`);
     } else {
       console.error('Error: scoreDisplay is undefined.');
     }
-  };
 }
 
-function draw() {
-  // Draw the background outside the canvas as black
-  //background(50);
-	
+	// restart   	
+	const restartButton = createButton('Restart');
+  restartButton.position(canvasX - 110, canvasY + 200); 
+  restartButton.mousePressed(restartGame);
+}
 
+
+function draw() {
   // Draw the red canvas
   push();
   noStroke();
@@ -105,12 +105,13 @@ function draw() {
 	// Draw static gold foil background
   image(goldFoilGraphics, 0, 0);
 
+	
     // Draw all active items
     for (let item of items) {
         item.symbol(
             item.x * cellSize + cellSize / 2,
             item.y * cellSize + cellSize / 2,
-            cellSize * 1.2 // Use cellSize for symbol size
+            cellSize * 1 
         );
     }
 
@@ -124,13 +125,6 @@ function draw() {
 
   // Check for collisions (with items or itself)
   checkCollisions();
-	
-	  // Display the score at the bottom of the canvas
-  //fill(255);
-  //textSize(16);
-  //textAlign(CENTER);
-  //text(`Symbols Eaten: ${score}`, width / 2, height - 10);
-  
 }
 
 function drawSnake() {
@@ -139,15 +133,12 @@ function drawSnake() {
 
     // Head of the snake
     if (i === 0) {
-      push();
-      //noFill(); 
-      //stroke(255, 204, 0);
-			//strokeWeight(2);
-			fill(255, 204, 0);
-			noStroke();
-      rect(x * cellSize, y * cellSize, cellSize, cellSize, 60); // Rounded head
+	    push();
+	    fill(255, 204, 0);
+	    noStroke();
+	    rect(x * cellSize, y * cellSize, cellSize, cellSize, 30); // Rounded head
 			
-			// Snake eyes
+	// Snake eyes
       fill(250, 50, 0); 
       noStroke();
       const eyeOffsetX = cellSize * 0.3; // Horizontal offset for the eyes
@@ -162,14 +153,16 @@ function drawSnake() {
 			
       pop();
     }
+	    
     // Body of the snake
     else if (i - 1 < eatenSymbols.length) {
       // Draw the corresponding symbol for the body part
-      eatenSymbols[i - 1](
-        x * cellSize + cellSize / 2,
-        y * cellSize + cellSize / 2,
-        cellSize * 1
-      );
+	    const symbol = eatenSymbols[i - 1];
+	    symbol(
+		    x * cellSize + cellSize / 2,
+		    y * cellSize + cellSize / 2,
+		    cellSize * 0.9
+	    );
     } else {
       // Default body (if no symbol)
       push();
@@ -220,28 +213,61 @@ function checkCollisions() {
 	
 	 // Check for collisions with the frame
   if (
-    headX < 0 || // Left boundary
-    headX + cellSize > width  || // Right boundary
-    headY < 0 || // Top boundary
-    headY + cellSize > height// Bottom boundary
-  ) {
-    gameOver();
+	  headX < 0 || // Left boundary
+	  headX + cellSize > width  || // Right boundary
+	  headY < 0 || // Top boundary
+	  headY + cellSize > height// Bottom boundary
+	  ) {
+	  gameOver();
+	  return;
   }
 	  for (let i = 1; i < snake.length; i++) {
     if (head[0] === snake[i][0] && head[1] === snake[i][1]) {
-      gameOver();
+	    gameOver();
+	    return;
     }
   }
+// Check for collisions with items (symbols)
+  for (let i = items.length - 1; i >= 0; i--) {
+    const item = items[i];
+    if (head[0] === item.x && head[1] === item.y) {
+      // The snake eats the symbol
+      eatenSymbols.push(item.symbol); // Add the symbol to the eaten queue
+
+      // Remove the item from the items array
+      items.splice(i, 1);
+
+      // Add a new segment to the snake's body
+      snake.push([...snake[snake.length - 1]]);
+
+      // Update the score
+      score++;
+
+      // Optionally, generate a new item to replace the eaten one
+      items.push(generateNonOverlappingItem());
+    }
+  }	
 }
 
 
 function gameOver() {
   noLoop();
   fill(0);
-	textFont(customFont);
+textFont(customFont);
   textSize(width/5);
   textAlign(CENTER, CENTER);
-  text("蛇年快樂", width / 2, height / 2 -30);
+  const verticalText = "蛇年快樂".split("");
+  const charHeight = textSize() * 1; // Height of each character (includes spacing)
+  const totalTextHeight = verticalText.length * charHeight; // Total height of the text block
+
+	// Calculate the starting Y position to center the text vertically
+  const startY = (height - totalTextHeight) / 2 + charHeight / 2 -20;
+  const centerX = width / 2; // X position stays centered horizontally
+
+  // Draw each character vertically, centered on the canvas
+  for (let i = 0; i < verticalText.length; i++) {
+    text(verticalText[i], centerX, startY + i * charHeight);
+  }
 }
 
 
@@ -249,7 +275,6 @@ function gameOver() {
   for (let i = 1; i < snake.length; i++) {
     if (head[0] === snake[i][0] && head[1] === snake[i][1]) {
       noLoop(); // Stop the game
-      alert("Game Over! Snake hit itself.");
     }
 }
 
@@ -258,8 +283,8 @@ function generateNonOverlappingItem() {
 
   do {
     // Generate x and y positions within the margin
-    x = floor(random(margin / cellSize, gridSizeX - margin / cellSize - 1));
-    y = floor(random(margin / cellSize, gridSizeY - margin / cellSize - 1));
+    x = floor(random(margin / cellSize, gridSizeX - margin / cellSize ));
+    y = floor(random(margin / cellSize, gridSizeY - margin / cellSize ));
 
     // Ensure the new item does not overlap the snake or other items
     isOverlapping =
@@ -295,7 +320,7 @@ function addGoldFoil(graphics, count) {
 }
 
 function createArrowButtons(canvasX, canvasY) {
-  const buttonSize = 30; // Adjust size for the buttons
+  const buttonSize = 40; // Adjust size for the buttons
   const offset = 20; // Distance between buttons
 
   // Common styles for all buttons
@@ -316,25 +341,25 @@ function createArrowButtons(canvasX, canvasY) {
 
   // Create UP button
   arrowButtons.up = createButton('▲');
-  arrowButtons.up.position(canvasX + 125 + buttonSize / 2, canvasY - 70);
+  arrowButtons.up.position(canvasX - 100, canvasY + 20);
   applyStyles(arrowButtons.up, commonStyles);
   arrowButtons.up.mousePressed(() => (direction = [0, -1]));
 
   // Create DOWN button
   arrowButtons.down = createButton('▼');
-  arrowButtons.down.position(canvasX + 125 + buttonSize / 2, canvasY - 30);
+  arrowButtons.down.position(canvasX - 100, canvasY + 80);
   applyStyles(arrowButtons.down, commonStyles);
   arrowButtons.down.mousePressed(() => (direction = [0, 1]));
 
   // Create LEFT button
   arrowButtons.left = createButton('◀');
-  arrowButtons.left.position(canvasX + 120 + offset - buttonSize, canvasY - 50);
+  arrowButtons.left.position(canvasX - 140, canvasY + 50);
   applyStyles(arrowButtons.left, commonStyles);
   arrowButtons.left.mousePressed(() => (direction = [-1, 0]));
 
   // Create RIGHT button
   arrowButtons.right = createButton('▶');
-  arrowButtons.right.position(canvasX + 150 + offset, canvasY - 50);
+  arrowButtons.right.position(canvasX - 60, canvasY + 50);
   applyStyles(arrowButtons.right, commonStyles);
   arrowButtons.right.mousePressed(() => (direction = [1, 0]));
 }
@@ -378,6 +403,38 @@ function keyReleased() {
 }
 }
 
+
+function restartGame() {
+  // Reset snake position and direction
+	const startX = floor(gridSizeX / 2);
+  const startY = floor(gridSizeY / 2);
+  snake = [[startX, startY]];
+  direction = [0, 0];
+
+  // Reset items and symbols
+  items = [];
+  eatenSymbols = [];
+  score = 0;
+
+  // Regenerate initial symbols
+  for (let i = 0; i < 5; i++) {
+    items.push(generateNonOverlappingItem());
+  }
+	
+  // Regenerate gold foil graphics
+  goldFoilGraphics = createGraphics(width, height);
+  const goldFoilCount = Math.floor(random(200, 500)); // Randomize the number of gold foil pieces
+  addGoldFoil(goldFoilGraphics, goldFoilCount);
+
+  // Reset the score display
+  updateScore();
+
+  // Restart the game loop
+  loop();
+}
+
+
+
 function windowResized() {
     let newWidth = windowWidth;
     let newHeight = windowWidth / aspectRatio; 
@@ -388,7 +445,7 @@ function windowResized() {
     }
 
     resizeCanvas(newWidth, newHeight);
-    cellSize = width / gridSizeX; // Update cell size based on new width
+    cellSize = height / gridSizeY; // Update cell size based on new width
 
     // Update positions of the save button and score display
     const canvasX = width;
