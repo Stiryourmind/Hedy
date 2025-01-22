@@ -17,7 +17,7 @@ let score = 0;
 let saveButton;
 let scoreDisplay;
 
-let arrowButtons = {}; // Object to store the arrow buttons
+let arrowButtons = {};
 
 
 function preload() {
@@ -27,7 +27,7 @@ function preload() {
 function setup() {
   const canvas = createCanvas(300, 500);
 canvas.position(windowWidth / 2 - width / 2, windowHeight / 2 - height / 2);
-cellSize = width / gridSizeX; // Cell size based on the grid width
+cellSize = height / gridSizeY; // Cell size based on the grid width
 
 // Initialize the snake in the center of the grid
   const startX = floor(gridSizeX / 2); // Center horizontally
