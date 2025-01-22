@@ -73,7 +73,7 @@ cellSize = height / gridSizeY; // Cell size based on the grid width
 createArrowButtons(canvas.position().x, canvas.position().y);
 	
   // scoreDisplay
-	scoreDisplay = createDiv(`祝福 + ${score}`);
+	scoreDisplay = createDiv(`Good Luck + ${score}`);
 	scoreDisplay.style('font-size', '16px');
 		scoreDisplay.style('font-weight', 'bold');
 		scoreDisplay.style('color', 'rgb(255, 215, 0)');
