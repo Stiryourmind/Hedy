@@ -62,13 +62,14 @@ cellSize = height / gridSizeY; // Cell size based on the grid width
 	
 	// Create the save image button below the canvas
   saveButton = createButton('Save Image');
-	saveButton.position(canvasX - 120, canvasY + 150); 
+	//saveButton.position(canvasX - 120, canvasY + 150); 
   saveButton.mousePressed(() => {
     if (!isLooping()) {
       saveCanvas('snake_game', 'png');
     }
   });
-
+	
+positionButtons(canvasX, canvasY);
 	
   // scoreDisplay
 	scoreDisplay = createDiv(`祝福 + ${score}`);
@@ -89,8 +90,18 @@ cellSize = height / gridSizeY; // Cell size based on the grid width
 
 // restart   	
 const restartButton = createButton('Restart');
-  restartButton.position(canvasX - 110, canvasY + 200); 
+  //restartButton.position(canvasX - 110, canvasY + 200); 
   restartButton.mousePressed(restartGame);
+}
+
+function positionButtons(canvasX, canvasY) {
+    const buttonHeight = height * 0.05; // Size based on canvas height
+
+    // Position the save button
+    saveButton.position(canvasX - buttonHeight * 2, canvasY + buttonHeight * 2);
+
+    // Position the restart button
+    restartButton.position(canvasX - buttonHeight * 2, canvasY + buttonHeight * 3);
 }
 
 
@@ -454,6 +465,7 @@ function windowResized() {
     	saveButton.position(canvasX + 10, canvasY - 40);
     	scoreDisplay.position(canvasX + 10, canvasY + 10);
 	createArrowButtons(canvasX, canvasY);
+	positionButtons(canvasX, canvasY);
 }
 
 
