@@ -138,8 +138,6 @@ function draw() {
   //textSize(16);
   //textAlign(CENTER);
   //text(`Symbols Eaten: ${score}`, width / 2, height - 10);
-
-  windowResized();
   
 }
 
