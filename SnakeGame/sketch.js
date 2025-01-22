@@ -69,8 +69,8 @@ cellSize = height / gridSizeY; // Cell size based on the grid width
     }
   });
 	
- positionButtons(canvas.position().x, canvas.position().y);
-createArrowButtons(canvas.position().x, canvas.position().y);
+ //positionButtons(canvas.position().x, canvas.position().y);
+//createArrowButtons(canvas.position().x, canvas.position().y);
 	
   // scoreDisplay
 	scoreDisplay = createDiv(`Good Luck + ${score}`);
