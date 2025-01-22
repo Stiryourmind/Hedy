@@ -3,7 +3,7 @@ let snake = [[20, 8]]; // Snake's initial position (center of the grid)
 let direction = [0, 0]; // Initial direction: no movement
 let gridSizeX = 40; // Total number of cells along the width
 let gridSizeY = 16; // Total number of cells along the height
-let cellSize; // Size of each cell (calculated dynamically)
+let cellSize; // Size of each cell
 let symbols = []; // Array to store functions to draw symbols
 let items = []; // Array to store active symbols on the canvas
 let eatenSymbols = []; // Array to store the symbols the snake has eaten
@@ -105,22 +105,14 @@ function draw() {
 	// Draw static gold foil background
   image(goldFoilGraphics, 0, 0);
 
-  //frame
-  //noFill();
- // stroke(255, 204, 0); //gold color for the frame
-  //strokeWeight(4); // Frame thickness
-  //rect(margin, margin, width - margin * 2, height - margin * 2);
-
-	
-	
-  // Draw all active items
-  for (let item of items) {
-    item.symbol(
-      item.x * cellSize + cellSize / 2,
-      item.y * cellSize + cellSize / 2,
-      cellSize * 1.2
-    );
-  }
+    // Draw all active items
+    for (let item of items) {
+        item.symbol(
+            item.x * cellSize + cellSize / 2,
+            item.y * cellSize + cellSize / 2,
+            cellSize * 1.2 // Use cellSize for symbol size
+        );
+    }
 
   // Draw the snake
   drawSnake();
@@ -386,7 +378,6 @@ function keyReleased() {
 }
 }
 
-// Resize the canvas while maintaining aspect ratio
 function windowResized() {
     let newWidth = windowWidth;
     let newHeight = windowWidth / aspectRatio; 
@@ -398,7 +389,8 @@ function windowResized() {
 
     resizeCanvas(newWidth, newHeight);
     cellSize = width / gridSizeX; // Update cell size based on new width
-    // Reposition the elements as necessary
+
+    // Update positions of the save button and score display
     const canvasX = width;
     const canvasY = height;
     saveButton.position(canvasX + 10, canvasY - 40);
@@ -536,27 +528,5 @@ function drawFlower(x, y, size) {
     line(0, -size * 0.3, 0, -size * 0.15); // Line inside petal
     rotate((2 * PI) / 5);
   }
-
-  // Additional decorative shapes around the flower
-  //stroke(255, 204, 0); // Gold for decorations
-  //strokeWeight(1);
-  //noFill();
-  //ellipse(0, -size * 0.8, size * 0.1); // Small circle above
-  //ellipse(size * 0.6, size * 0.3, size * 0.1); // Small circle right
-  //ellipse(-size * 0.6, size * 0.3, size * 0.1); // Small circle left
   pop();
-}
-
-
-
-function windowResized() {
-  let newWidth = windowWidth;
-  let newHeight = windowWidth / aspectRatio; 
-
-  if (newHeight > windowHeight) {
-    newHeight = windowHeight;
-    newWidth = windowHeight * aspectRatio; 
-  }
-
-  resizeCanvas(newWidth, newHeight); 
 }
