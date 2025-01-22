@@ -321,7 +321,7 @@ function addGoldFoil(graphics, count) {
 }
 
 function createArrowButtons(canvasX, canvasY) {
-  const buttonSize = 40; // Adjust size for the buttons
+  const buttonSize = height * 0.05; // Adjust size for the buttons
   const offset = 20; // Distance between buttons
 
   // Common styles for all buttons
@@ -449,10 +449,11 @@ function windowResized() {
     cellSize = height / gridSizeY; // Update cell size based on new width
 
     // Update positions of the save button and score display
-    const canvasX = width;
-    const canvasY = height;
-    saveButton.position(canvasX + 10, canvasY - 40);
-    scoreDisplay.position(canvasX + 10, canvasY + 10);
+    	const canvasX = width;
+    	const canvasY = height;
+    	saveButton.position(canvasX + 10, canvasY - 40);
+    	scoreDisplay.position(canvasX + 10, canvasY + 10);
+	createArrowButtons(canvasX, canvasY);
 }
 
 
