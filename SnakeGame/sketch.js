@@ -26,7 +26,7 @@ function preload() {
 
 function setup() {
   const canvas = createCanvas(300, 500);
-canvas.position(windowWidth / 2 - width / 2, windowHeight / 2 - height / 2);
+canvas.position(windowWidth -width) / 2, (windowHeight - height) / 2);
 cellSize = height / gridSizeY; // Cell size based on the grid width
 
 // Initialize the snake in the center of the grid
@@ -447,28 +447,23 @@ function restartGame() {
 }
 
 
-
 function windowResized() {
     let newWidth = windowWidth;
-    let newHeight = windowWidth / aspectRatio; 
+    let newHeight = newWidth / aspectRatio;
 
     if (newHeight > windowHeight) {
         newHeight = windowHeight;
-        newWidth = windowHeight * aspectRatio; 
+        newWidth = windowHeight * aspectRatio;
     }
 
     resizeCanvas(newWidth, newHeight);
-    cellSize = height / gridSizeY; // Update cell size based on new width
+    cellSize = height / gridSizeY; // Update cell size based on new height
 
-    // Update positions of the save button and score display
-    	const canvasX = width;
-    	const canvasY = height;
-    	saveButton.position(canvasX + 10, canvasY - 40);
-    	scoreDisplay.position(canvasX + 10, canvasY + 10);
-	//createArrowButtons(canvasX, canvasY);
-	//positionButtons(canvasX, canvasY);
+    // Update positions of buttons
+    positionButtons((windowWidth - newWidth) / 2, (windowHeight - newHeight) / 2);
+    saveButton.position((windowWidth - saveButton.width) / 2, newHeight - saveButton.height - 10);
+    scoreDisplay.position((windowWidth - scoreDisplay.width) / 2, 10);
 }
-
 
 
 // Symbol Functions
