@@ -386,17 +386,25 @@ function keyReleased() {
 }
 }
 
-
+// Resize the canvas while maintaining aspect ratio
 function windowResized() {
-  const canvas = createCanvas(800, 300);
-  canvas.position(windowWidth / 2 - width / 2, windowHeight / 2 - height / 2);
+    let newWidth = windowWidth;
+    let newHeight = windowWidth / aspectRatio; 
 
-  const canvasX = canvas.position().x;
-  const canvasY = canvas.position().y;
+    if (newHeight > windowHeight) {
+        newHeight = windowHeight;
+        newWidth = windowHeight * aspectRatio; 
+    }
 
-  saveButton.position(canvasX + 10, canvasY - 40);
-  scoreDisplay.position(canvasX + 10, canvasY + 10);
+    resizeCanvas(newWidth, newHeight);
+    cellSize = width / gridSizeX; // Update cell size based on new width
+    // Reposition the elements as necessary
+    const canvasX = width;
+    const canvasY = height;
+    saveButton.position(canvasX + 10, canvasY - 40);
+    scoreDisplay.position(canvasX + 10, canvasY + 10);
 }
+
 
 
 // Symbol Functions
