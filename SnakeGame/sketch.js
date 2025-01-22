@@ -69,7 +69,8 @@ cellSize = height / gridSizeY; // Cell size based on the grid width
     }
   });
 	
-positionButtons(canvasX, canvasY);
+ positionButtons(canvas.position().x, canvas.position().y);
+createArrowButtons(canvas.position().x, canvas.position().y);
 	
   // scoreDisplay
 	scoreDisplay = createDiv(`祝福 + ${score}`);
@@ -464,8 +465,8 @@ function windowResized() {
     	const canvasY = height;
     	saveButton.position(canvasX + 10, canvasY - 40);
     	scoreDisplay.position(canvasX + 10, canvasY + 10);
-	createArrowButtons(canvasX, canvasY);
-	positionButtons(canvasX, canvasY);
+	//createArrowButtons(canvasX, canvasY);
+	//positionButtons(canvasX, canvasY);
 }
 
 
