@@ -46,7 +46,7 @@ cellSize = height / gridSizeY; // Cell size based on the grid width
     items.push(generateNonOverlappingItem());
   }
 
-  frameRate(8); // Control the snake's speed
+  frameRate(6); // Control the snake's speed
 	
   // Create static gold foil pattern
   goldFoilGraphics = createGraphics(width, height);
@@ -87,8 +87,8 @@ cellSize = height / gridSizeY; // Cell size based on the grid width
     }
 }
 
-	// restart   	
-	const restartButton = createButton('Restart');
+// restart   	
+const restartButton = createButton('Restart');
   restartButton.position(canvasX - 110, canvasY + 200); 
   restartButton.mousePressed(restartGame);
 }
@@ -192,18 +192,18 @@ function updateSnake() {
 }
 
 function checkIfEaten(newHead) {
-  for (let i = 0; i < items.length; i++) {
-    const item = items[i];
-    if (newHead[0] === item.x && newHead[1] === item.y) {
-      eatenSymbols.push(symbols[item.type]); // Add the eaten symbol to the body
-      items.splice(i, 1); // Remove the item from the canvas
-      items.push(generateNonOverlappingItem()); // Add a new random item to the canvas
-			score++; // Increase the score when a symbol is eaten
-			updateScore(); // Update the score display
-      return true;
-    }
-  }
-  return false;
+	for (let i = 0; i < items.length; i++) {
+	  const item = items[i];
+	  if (newHead[0] === item.x && newHead[1] === item.y) {
+	    eatenSymbols.push(symbols[item.type]); // Add the eaten symbol to the body
+	    items.splice(i, 1); // Remove the item from the canvas
+	    items.push(generateNonOverlappingItem()); // Add a new random item to the canvas
+	    score++; // Increase the score when a symbol is eaten
+	    updateScore(); // Update the score display
+	    return true;
+	  }
+	}
+	return false;
 }
 
 function checkCollisions() {
@@ -227,6 +227,7 @@ function checkCollisions() {
 	    return;
     }
   }
+	
 // Check for collisions with items (symbols)
   for (let i = items.length - 1; i >= 0; i--) {
     const item = items[i];
@@ -254,7 +255,7 @@ function gameOver() {
   noLoop();
   fill(0);
 textFont(customFont);
-  textSize(width/5);
+  textSize(height/5);
   textAlign(CENTER, CENTER);
   const verticalText = "蛇年快樂".split("");
   const charHeight = textSize() * 1; // Height of each character (includes spacing)
