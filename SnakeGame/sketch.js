@@ -23,10 +23,14 @@ function preload() {
     customFont  = loadFont('HanyiSentyPagodaRegular.ttf'); 
 }
 
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
+}
+
 function setup() {
-  const canvas = createCanvas(800, 300);
+  const canvas = createCanvas(windowWidth, windowHeight);
 	canvas.position(windowWidth / 2 - width / 2, windowHeight / 2 - height / 2);
-	
+
 	//createArrowButtons(canvasX, canvasY);
   
 	cellSize = width / gridSizeX; // Cell size based on the grid width
@@ -59,7 +63,7 @@ function setup() {
 	
 	// Create the save image button below the canvas
   saveButton = createButton('Save Image');
-	saveButton.position(canvasX + 10, canvasY - 30); // Adjusted position relative to the canvas
+	saveButton.position(canvasX + 10, canvasY - 40); // Adjusted position relative to the canvas
   saveButton.mousePressed(() => {
     if (!isLooping()) {
       saveCanvas('snake_game', 'png');
@@ -87,12 +91,6 @@ function setup() {
       console.error('Error: scoreDisplay is undefined.');
     }
   };
-	
-	const restartButton = createButton('Restart');
-  restartButton.position(canvasX + 120, canvasY - 30); 
-  restartButton.mousePressed(restartGame);
-
-	
 }
 
 function draw() {
@@ -143,6 +141,9 @@ function draw() {
   //textSize(16);
   //textAlign(CENTER);
   //text(`Symbols Eaten: ${score}`, width / 2, height - 10);
+
+  windowResized();
+  
 }
 
 function drawSnake() {
@@ -261,7 +262,7 @@ function gameOver() {
   for (let i = 1; i < snake.length; i++) {
     if (head[0] === snake[i][0] && head[1] === snake[i][1]) {
       noLoop(); // Stop the game
-      //alert("Game Over! Snake hit itself.");
+      alert("Game Over! Snake hit itself.");
     }
 }
 
@@ -307,7 +308,7 @@ function addGoldFoil(graphics, count) {
 }
 
 function createArrowButtons(canvasX, canvasY) {
-  const buttonSize = 40; // Adjust size for the buttons
+  const buttonSize = 30; // Adjust size for the buttons
   const offset = 20; // Distance between buttons
 
   // Common styles for all buttons
@@ -328,25 +329,25 @@ function createArrowButtons(canvasX, canvasY) {
 
   // Create UP button
   arrowButtons.up = createButton('▲');
-  arrowButtons.up.position(canvasX + 235 + buttonSize / 2, canvasY - 110);
+  arrowButtons.up.position(canvasX + 125 + buttonSize / 2, canvasY - 70);
   applyStyles(arrowButtons.up, commonStyles);
   arrowButtons.up.mousePressed(() => (direction = [0, -1]));
 
   // Create DOWN button
   arrowButtons.down = createButton('▼');
-  arrowButtons.down.position(canvasX + 235 + buttonSize / 2, canvasY - 50);
+  arrowButtons.down.position(canvasX + 125 + buttonSize / 2, canvasY - 30);
   applyStyles(arrowButtons.down, commonStyles);
   arrowButtons.down.mousePressed(() => (direction = [0, 1]));
 
   // Create LEFT button
   arrowButtons.left = createButton('◀');
-  arrowButtons.left.position(canvasX + 230 + offset - buttonSize, canvasY - 80);
+  arrowButtons.left.position(canvasX + 120 + offset - buttonSize, canvasY - 50);
   applyStyles(arrowButtons.left, commonStyles);
   arrowButtons.left.mousePressed(() => (direction = [-1, 0]));
 
   // Create RIGHT button
   arrowButtons.right = createButton('▶');
-  arrowButtons.right.position(canvasX + 278 + offset, canvasY - 80);
+  arrowButtons.right.position(canvasX + 150 + offset, canvasY - 50);
   applyStyles(arrowButtons.right, commonStyles);
   arrowButtons.right.mousePressed(() => (direction = [1, 0]));
 }
@@ -390,34 +391,6 @@ function keyReleased() {
 }
 }
 
-function restartGame() {
-  // Reset snake position and direction
-  snake = [[20, 8]];
-  direction = [0, 0];
-
-  // Reset items and symbols
-  items = [];
-  eatenSymbols = [];
-  score = 0;
-
-  // Regenerate initial symbols
-  for (let i = 0; i < 5; i++) {
-    items.push(generateNonOverlappingItem());
-  }
-	
-  // Regenerate gold foil graphics
-  goldFoilGraphics = createGraphics(width, height);
-  const goldFoilCount = Math.floor(random(200, 500)); // Randomize the number of gold foil pieces
-  addGoldFoil(goldFoilGraphics, goldFoilCount);
-
-  // Reset the score display
-  updateScore();
-
-  // Restart the game loop
-  loop();
-}
-
-
 
 function windowResized() {
   const canvas = createCanvas(800, 300);
@@ -431,8 +404,7 @@ function windowResized() {
 }
 
 
-
-// Symbol
+// Symbol Functions
 
 function drawSmiley(x, y, size) {
 	size *= symbolSizeMultiplier; 
