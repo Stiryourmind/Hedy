@@ -306,7 +306,7 @@ function getRandomPhrase() {
 	function gameOver() {
   noLoop();
   fill(0);
-	textFont(customFont);
+  textFont(customFont);
   textSize(height/5);
   textAlign(CENTER, CENTER);
 	
@@ -438,14 +438,14 @@ function getRandomPhrase() {
     //const canvasY = height / 2;
 		
     scoreDisplay.position(xOffset + 10, yOffset + 10);
-    saveButton.position(xOffset + 130, yOffset - 30);
-    restartButton.position(xOffset + 240, yOffset - 30); 
+    saveButton.position(xOffset, yOffset - 30);
+    restartButton.position(xOffset + 100, yOffset - 30); 
     
-    const buttonY = yOffset - 100; 
-    arrowButtons.up.position(xOffset + buttonSize, buttonY);
-    arrowButtons.down.position(xOffset + buttonSize, buttonY + buttonSize + 10);
-    arrowButtons.left.position(xOffset, buttonY + buttonSize / 2);
-    arrowButtons.right.position(xOffset + 80, buttonY + buttonSize / 2);
+    const buttonY =  yOffset + height; 
+    arrowButtons.up.position(xOffset , buttonY);
+    arrowButtons.down.position(xOffset + buttonSize +10, buttonY);
+    arrowButtons.left.position(xOffset+ buttonSize *2 +20, buttonY);
+    arrowButtons.right.position(xOffset+buttonSize *3 +30, buttonY);
 }
 
 function windowResized() {
