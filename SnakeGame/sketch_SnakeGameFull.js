@@ -26,22 +26,17 @@ let buttonSize = 40;
 let xOffset, yOffset; 
 let gameActive = true;
 
-function preload() {
-    customFont  = loadFont('HanyiSentyPagodaRegular.ttf'); 
-}
+//function preload() {
+//    customFont  = loadFont('HanyiSentyPagodaRegular.ttf'); 
+//}
 
 function setup() {
 	//const scaleFactor = min(windowWidth / AspectRatioWidth, windowHeight / AspectRatioHeight);
-	const canvasWidth = AspectRatioWidth;
-	const canvasHeight = AspectRatioHeight;
-	
-	// Centered canvas
-	xOffset = (windowWidth - canvasWidth) / 2;
-	yOffset = (windowHeight - canvasHeight) / 2;
-	createCanvas(canvasWidth, canvasHeight);
+	createCanvas(AspectRatioWidth, AspectRatioHeight).parent('game-container');
+
 	cellSize = height / gridSizeY; 
 	initializeGame(); 
-	createUI(xOffset, yOffset);
+	createUI();
 	
 	//Add initial symbols
 	  for (let i = 0; i < 5; i++) {
@@ -50,77 +45,77 @@ function setup() {
 	
 	frameRate(6); // Control the snake's speed
 	createGoldFoilGraphics();
+	resizeGameElements(); 
 }
 
 //UI elements
-function createUI(xOffset, yOffset){
+function createUI(){
 	//score display
 	scoreDisplay = createDiv(`祝福 Good Luck + ${score}`);
 	scoreDisplay.style('font-size', '12px');
 	scoreDisplay.style('font-weight', 'bold');
 	scoreDisplay.style('color', 'rgb(255, 215, 0)');
 	scoreDisplay.style('text-align', 'left');
-	scoreDisplay.position(xOffset + 5, yOffset + 5);
+	//scoreDisplay.position(xOffset + 5, yOffset + 5);
+	scoreDisplay.parent('game-container'); //
 		
 	//save button
 	saveButton = createButton('Save Image');
-	saveButton.position(xOffset , yOffset -30 );
+	saveButton.parent('game-container');
+	saveButton.position(10, 10);
 	saveButton.mousePressed(() => saveCanvas('snake_game', 'png'));
+	
     
 	//restart button
 	restartButton = createButton('Restart');
-	restartButton.position(xOffset +100, yOffset -30); 
+	restartButton.parent('game-container');
+	restartButton.position(100, 10); 
 	restartButton.mousePressed(restartGame);
 		
 	//arrom button
-	createArrowButtons(xOffset, yOffset + height + 100);	
+	createArrowButtons();	
 }
 
 //Arrow button
-function createArrowButtons(xOffset, yOffset) {
+function createArrowButtons() {
 	// Common styles for all buttons
 	const commonStyles = {
-		width: `${buttonSize}px`,
-    height: `${buttonSize}px`,
-    background: 'rgb(250, 50, 0)',
-    border: '2px solid rgb(255, 215, 0)',
-    borderRadius: '8px',
-    textAlign: 'center',
-    fontSize: `${buttonSize * 0.5}px`,
-    color: 'white',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    cursor: 'pointer',
+        width: `${buttonSize}px`,
+        height: `${buttonSize}px`,
+        background: 'rgb(250, 50, 0)',
+        border: '2px solid rgb(255, 215, 0)',
+        borderRadius: '8px',
+        textAlign: 'center',
+        fontSize: `${buttonSize * 0.5}px`,
+        color: 'white',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        cursor: 'pointer',
 	};
 	
-	const buttonY = yOffset - 100; // Ypos at the top of the red canvas
-		
+	
 	// UP
 	arrowButtons.up = createButton('▲');
-	//arrowButtons.up.position(xOffset, buttonY);
-	arrowButtons.up.position(xOffset+ buttonSize, buttonY);
+	arrowButtons.up.parent('game-container');
   applyStyles(arrowButtons.up, commonStyles);
   arrowButtons.up.mousePressed(() => (direction = [0, -1]));
 		
 	// DOWN
   arrowButtons.down = createButton('▼');
-  //arrowButtons.down.position(xOffset+ buttonSize+10, buttonY);
-  arrowButtons.down.position(xOffset+ buttonSize, buttonY + buttonSize + 10);
+  arrowButtons.down.parent('game-container');
   applyStyles(arrowButtons.down, commonStyles);
   arrowButtons.down.mousePressed(() => (direction = [0, 1]));
 		
 	// LEFT
   arrowButtons.left = createButton('◀');
-  //arrowButtons.left.position(xOffset+ buttonSize *2+20, buttonY);
-  arrowButtons.left.position(xOffset, buttonY + buttonSize/2);
+  arrowButtons.left.parent('game-container');
   applyStyles(arrowButtons.left, commonStyles);
 	arrowButtons.left.mousePressed(() => (direction = [-1, 0]));
 		
 	// RIGHT 
   arrowButtons.right = createButton('▶');
-  //arrowButtons.right.position(xOffset+ buttonSize *3 + 30, buttonY);
-  arrowButtons.right.position(xOffset+80 , buttonY + buttonSize/2);
+  arrowButtons.right.parent('game-container'); 
   applyStyles(arrowButtons.right, commonStyles);
   arrowButtons.right.mousePressed(() => (direction = [1, 0]));
 }
@@ -310,7 +305,7 @@ function getRandomPhrase() {
 	function gameOver() {
   noLoop();
   fill(0);
-  textFont(customFont);
+  //textFont(customFont);
   textSize(height/5);
   textAlign(CENTER, CENTER);
 	
@@ -428,10 +423,16 @@ function getRandomPhrase() {
 }
 	
 //resize	
-	function resizeGameElements(xOffset, yOffset){
+/*	function resizeGameElements(){
 	
+	
+		const scaleFactor = height / AspectRatioHeight;
+		const newWidth = AspectRatioWidth * scaleFactor;
+    	const newHeight = AspectRatioHeight * scaleFactor;
+	
+		resizeCanvas(newWidth, newHeight);
 		cellSize = height / gridSizeY; 
-		
+
 		// Ensure the snake's head is within bounds after resizing
     const head = snake[0];
     const headX = head[0] * cellSize;
@@ -441,29 +442,64 @@ function getRandomPhrase() {
     //const canvasX = width / 2;
     //const canvasY = height / 2;
 		
-    scoreDisplay.position(xOffset + 10, yOffset + 10);
-    saveButton.position(xOffset, yOffset - 30);
-    restartButton.position(xOffset + 100, yOffset - 30); 
+	scoreDisplay.position(10 * scaleFactor, 10 * scaleFactor);
+    saveButton.position(0 * scaleFactor, (-30) * scaleFactor);
+    restartButton.position(100 * scaleFactor, (-30) * scaleFactor);
     
-    const buttonY =  yOffset + height; 
+    const buttonY =  height; 
     //arrowButtons.up.position(xOffset , buttonY);
     //arrowButtons.down.position(xOffset + buttonSize +10, buttonY);
     //arrowButtons.left.position(xOffset+ buttonSize *2 +20, buttonY);
     //arrowButtons.right.position(xOffset+buttonSize *3 +30, buttonY);
-	arrowButtons.up.position(xOffset + buttonSize, buttonY);
-    arrowButtons.down.position(xOffset + buttonSize, buttonY + buttonSize + 10);
-    arrowButtons.left.position(xOffset, buttonY + buttonSize / 2);
-    arrowButtons.right.position(xOffset + 80, buttonY + buttonSize / 2);
+	//arrowButtons.up.position(xOffset + buttonSize, buttonY);
+    //arrowButtons.down.position(xOffset + buttonSize, buttonY + buttonSize + 10);
+    //arrowButtons.left.position(xOffset, buttonY + buttonSize / 2);
+    //arrowButtons.right.position(xOffset + 80, buttonY + buttonSize / 2);
+	arrowButtons.up.position(buttonSize * scaleFactor, buttonY);
+    arrowButtons.down.position(buttonSize * scaleFactor, buttonY + buttonSize * scaleFactor + 10 * scaleFactor);
+    arrowButtons.left.position(0 * scaleFactor, buttonY + buttonSize * scaleFactor / 2);
+    arrowButtons.right.position(80 * scaleFactor, buttonY + buttonSize * scaleFactor / 2);
+}
+*/
+
+function resizeGameElements() {
+    // Original positions (in pixels)
+    const originalPositions = {
+        scoreDisplay: { x: 10, y: 10 },
+        saveButton: { x: 0, y: -30 },
+        restartButton: { x: 100, y: -30 },
+        arrowButtons: {
+            up: { x: buttonSize, y: height },
+            down: { x: buttonSize, y: height + buttonSize + 10 },
+            left: { x: 0, y: height + buttonSize / 2 },
+            right: { x: 80, y: height + buttonSize / 2 },
+        }
+    };
+
+    // Set initial positions without scaling
+    scoreDisplay.position(originalPositions.scoreDisplay.x, originalPositions.scoreDisplay.y);
+    saveButton.position(originalPositions.saveButton.x, originalPositions.saveButton.y);
+    restartButton.position(originalPositions.restartButton.x, originalPositions.restartButton.y);
+
+    arrowButtons.up.position(originalPositions.arrowButtons.up.x, originalPositions.arrowButtons.up.y);
+    arrowButtons.down.position(originalPositions.arrowButtons.down.x, originalPositions.arrowButtons.down.y);
+    arrowButtons.left.position(originalPositions.arrowButtons.left.x, originalPositions.arrowButtons.left.y);
+    arrowButtons.right.position(originalPositions.arrowButtons.right.x, originalPositions.arrowButtons.right.y);
 }
 
+
+
 function windowResized() {
+	const scaleFactor = min(windowWidth / AspectRatioWidth, windowHeight / AspectRatioHeight);
     const newWidth = min(windowWidth, AspectRatioWidth);
     const newHeight = min(windowHeight, AspectRatioHeight);
-    
+
+    // Ensure the canvas size doesn't exceed the maximum dimensions
     resizeCanvas(newWidth, newHeight);
-	  xOffset = (windowWidth - newWidth) / 2;
-    yOffset = (windowHeight - newHeight) / 2;
-    resizeGameElements(xOffset, yOffset); 
+    cellSize = newHeight / gridSizeY;
+
+    // Resize UI elements
+    resizeGameElements();
 }
 
 // Symbol Functions
