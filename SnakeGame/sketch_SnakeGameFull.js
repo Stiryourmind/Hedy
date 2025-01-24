@@ -12,7 +12,7 @@ let symbolSizeMultiplier = 1;
 let goldFoilGraphics;
 let currentPhrase = "";
 
-const AspectRatioWidth = 300;
+const AspectRatioWidth = 250;
 const AspectRatioHeight = 400;
 
 // Variable for score
