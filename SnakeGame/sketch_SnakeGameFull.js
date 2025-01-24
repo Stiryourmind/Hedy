@@ -13,7 +13,7 @@ let goldFoilGraphics;
 let currentPhrase = "";
 
 const AspectRatioWidth = 300;
-const AspectRatioHeight = 500;
+const AspectRatioHeight = 400;
 
 // Variable for score
 let score = 0;
