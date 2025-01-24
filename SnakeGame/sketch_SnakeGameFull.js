@@ -98,25 +98,29 @@ function createArrowButtons(xOffset, yOffset) {
 		
 	// UP
 	arrowButtons.up = createButton('▲');
-	arrowButtons.up.position(xOffset, buttonY);
+	//arrowButtons.up.position(xOffset, buttonY);
+	arrowButtons.up.position(xOffset+ buttonSize, buttonY);
   applyStyles(arrowButtons.up, commonStyles);
   arrowButtons.up.mousePressed(() => (direction = [0, -1]));
 		
 	// DOWN
   arrowButtons.down = createButton('▼');
-  arrowButtons.down.position(xOffset+ buttonSize+10, buttonY);
+  //arrowButtons.down.position(xOffset+ buttonSize+10, buttonY);
+  arrowButtons.down.position(xOffset+ buttonSize, buttonY + buttonSize + 10);
   applyStyles(arrowButtons.down, commonStyles);
   arrowButtons.down.mousePressed(() => (direction = [0, 1]));
 		
 	// LEFT
   arrowButtons.left = createButton('◀');
-  arrowButtons.left.position(xOffset+ buttonSize *2+20, buttonY);
+  //arrowButtons.left.position(xOffset+ buttonSize *2+20, buttonY);
+  arrowButtons.left.position(xOffset, buttonY + buttonSize/2);
   applyStyles(arrowButtons.left, commonStyles);
 	arrowButtons.left.mousePressed(() => (direction = [-1, 0]));
 		
 	// RIGHT 
   arrowButtons.right = createButton('▶');
-  arrowButtons.right.position(xOffset+ buttonSize *3 + 30, buttonY);
+  //arrowButtons.right.position(xOffset+ buttonSize *3 + 30, buttonY);
+  arrowButtons.right.position(xOffset+80 , buttonY + buttonSize/2);
   applyStyles(arrowButtons.right, commonStyles);
   arrowButtons.right.mousePressed(() => (direction = [1, 0]));
 }
@@ -442,10 +446,14 @@ function getRandomPhrase() {
     restartButton.position(xOffset + 100, yOffset - 30); 
     
     const buttonY =  yOffset + height; 
-    arrowButtons.up.position(xOffset , buttonY);
-    arrowButtons.down.position(xOffset + buttonSize +10, buttonY);
-    arrowButtons.left.position(xOffset+ buttonSize *2 +20, buttonY);
-    arrowButtons.right.position(xOffset+buttonSize *3 +30, buttonY);
+    //arrowButtons.up.position(xOffset , buttonY);
+    //arrowButtons.down.position(xOffset + buttonSize +10, buttonY);
+    //arrowButtons.left.position(xOffset+ buttonSize *2 +20, buttonY);
+    //arrowButtons.right.position(xOffset+buttonSize *3 +30, buttonY);
+	arrowButtons.up.position(xOffset + buttonSize, buttonY);
+    arrowButtons.down.position(xOffset + buttonSize, buttonY + buttonSize + 10);
+    arrowButtons.left.position(xOffset, buttonY + buttonSize / 2);
+    arrowButtons.right.position(xOffset + 80, buttonY + buttonSize / 2);
 }
 
 function windowResized() {
