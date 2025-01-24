@@ -4,19 +4,26 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SnakeGame</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
   <style>
-    body {
-        margin: 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        background-color: #f0f0f0; /* Optional: background color */
-        overflow: hidden; /* Prevent scrollbars */
-    }
-    canvas {
-        display: block; /* Prevents extra space below the canvas */
-    }
+  body {
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column; /* Stack elements vertically */
+    height: 100vh;
+    background-color: #f0f0f0; /* Optional: background color */
+    overflow: hidden; /* Prevent scrollbars */
+}
+#game-container {
+            position: relative;
+        }
+
+/*canvas {
+    display: block;
+    } /* Prevents extra space below the canvas */
+
 </style>
   <!-- Link to p5.js library -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.js"></script>
@@ -25,16 +32,16 @@
   <!-- Link to external JavaScript file (if using sketch.js) -->
 </head>
 <body>
+  <div id="game-container"></div>
   <script>
     function windowResized() {
-        const newWidth = min(windowWidth, AspectRatioWidth);
-        const newHeight = min(windowHeight, AspectRatioHeight);
-        resizeCanvas(newWidth, newHeight);
-        xOffset = (windowWidth - newWidth) / 2;
-        yOffset = (windowHeight - newHeight) / 2;
-        resizeGameElements(xOffset, yOffset);
+
+        resizeGameElements();
     }
 </script>
 </body>
 </body>
 </html>
+
+
+
