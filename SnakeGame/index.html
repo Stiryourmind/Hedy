@@ -6,12 +6,16 @@
   <title>SnakeGame</title>
   <style>
     body {
+        margin: 0;
         display: flex;
         justify-content: center;
         align-items: center;
-        height: 100vh; /* Full viewport height */
-        margin: 0; /* Remove default margin */
+        height: 100vh;
         background-color: #f0f0f0; /* Optional: background color */
+        overflow: hidden; /* Prevent scrollbars */
+    }
+    canvas {
+        display: block; /* Prevents extra space below the canvas */
     }
     canvas {
         display: block; /* Prevents extra space below the canvas */
