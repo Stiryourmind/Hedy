@@ -64,16 +64,16 @@ function createUI(xOffset, yOffset){
 		
 	//save button
 	saveButton = createButton('Save Image');
-	saveButton.position(xOffset +130 , yOffset -30 );
+	saveButton.position(xOffset , yOffset -30 );
 	saveButton.mousePressed(() => saveCanvas('snake_game', 'png'));
     
 	//restart button
 	restartButton = createButton('Restart');
-	restartButton.position(xOffset +240, yOffset -30); 
+	restartButton.position(xOffset +100, yOffset -30); 
 	restartButton.mousePressed(restartGame);
 		
 	//arrom button
-	createArrowButtons(xOffset, yOffset);	
+	createArrowButtons(xOffset, yOffset + height + 100);	
 }
 
 //Arrow button
@@ -98,25 +98,25 @@ function createArrowButtons(xOffset, yOffset) {
 		
 	// UP
 	arrowButtons.up = createButton('▲');
-  arrowButtons.up.position(xOffset+ buttonSize, buttonY);
+	arrowButtons.up.position(xOffset, buttonY);
   applyStyles(arrowButtons.up, commonStyles);
   arrowButtons.up.mousePressed(() => (direction = [0, -1]));
 		
 	// DOWN
   arrowButtons.down = createButton('▼');
-  arrowButtons.down.position(xOffset+ buttonSize, buttonY + buttonSize + 10);
+  arrowButtons.down.position(xOffset+ buttonSize+10, buttonY);
   applyStyles(arrowButtons.down, commonStyles);
   arrowButtons.down.mousePressed(() => (direction = [0, 1]));
 		
 	// LEFT
   arrowButtons.left = createButton('◀');
-  arrowButtons.left.position(xOffset, buttonY + buttonSize/2);
+  arrowButtons.left.position(xOffset+ buttonSize *2+20, buttonY);
   applyStyles(arrowButtons.left, commonStyles);
 	arrowButtons.left.mousePressed(() => (direction = [-1, 0]));
 		
 	// RIGHT 
   arrowButtons.right = createButton('▶');
-  arrowButtons.right.position(xOffset+80 , buttonY + buttonSize/2);
+  arrowButtons.right.position(xOffset+ buttonSize *3 + 30, buttonY);
   applyStyles(arrowButtons.right, commonStyles);
   arrowButtons.right.mousePressed(() => (direction = [1, 0]));
 }
