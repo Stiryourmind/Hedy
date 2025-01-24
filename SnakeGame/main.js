@@ -26,9 +26,9 @@ let buttonSize = 40;
 let xOffset, yOffset; 
 let gameActive = true;
 
-//function preload() {
-//    customFont  = loadFont('HanyiSentyPagodaRegular.ttf'); 
-//}
+function preload() {
+    customFont  = loadFont('HanyiSentyPagodaRegular.ttf'); 
+}
 
 function setup() {
 	//const scaleFactor = min(windowWidth / AspectRatioWidth, windowHeight / AspectRatioHeight);
@@ -130,7 +130,7 @@ function getRandomPhrase() {
 	function gameOver() {
   noLoop();
   fill(0);
-  //textFont(customFont);
+  textFont(customFont);
   textSize(height/5);
   textAlign(CENTER, CENTER);
 	
