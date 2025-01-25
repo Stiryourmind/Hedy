@@ -280,9 +280,9 @@ function draw() {
 		
 		if (
 			headX < 0 || // Left boundary
-			headX + cellSize > width  || // Right boundary
-    	headY < 0 || // Top boundary
-    	headY + cellSize > height// Bottom boundary
+			headX  >= width  || // Right boundary
+			headY < 0 || // Top boundary
+			headY  >= height// Bottom boundary
 		) {
 			gameOver();
 			return;
