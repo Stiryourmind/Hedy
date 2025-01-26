@@ -44,7 +44,7 @@ function setup() {
   createGoldFoilGraphics();
 
   //save button
-	saveButton = createButton('Save Image');
+	saveButton = createButton('Save Image<br>|');
 	saveButton.parent('game-container');
   saveButton.style('font-family', 'SnakeChan');
   saveButton.style('font-size', '20px');
@@ -56,7 +56,7 @@ function setup() {
   saveButton.mouseOver(() => saveButton.style('color', 'rgb(87, 255, 152)')); 
   saveButton.mouseOut(() => saveButton.style('color', 'white'));
 	saveButton.mousePressed(() => saveCanvas('snake_game', 'png'));
-  saveButton.position(width - 105, height + 20);
+  saveButton.position(width - 105, height + 40);
 	
 	//arrom button
 	createArrowButtons();	
@@ -75,7 +75,7 @@ function createStartPage() {
    // Display gold foil pattern
    image(goldFoilGraphics, 0, 0);
 
-  startButton = createButton('Start');
+  startButton = createButton('Start<br>}');
   startButton.parent('game-container'); 
   startButton.style('font-size', '45px');
   startButton.style('background', 'none'); 
@@ -119,7 +119,7 @@ function startGame() {
 //UI elements
 function createUI(){
 	//score display
-	scoreDisplay = createDiv(`score + ${score}`);
+	scoreDisplay = createDiv(`score / ${score}`);
   scoreDisplay.style('font-family', 'SnakeChan');
 	scoreDisplay.style('font-size', '10px');
 	scoreDisplay.style('color', 'rgb(255, 255, 255)');
@@ -173,7 +173,7 @@ function createArrowButtons() {
 	arrowButtons.up.parent('game-container');
   applyStyles(arrowButtons.up, commonStyles);
   arrowButtons.up.mousePressed(() => (direction = [0, -1]));
-  arrowButtons.up.position(buttonSize + 10, height + 10);
+  arrowButtons.up.position(buttonSize + 15, height + 10);
 
 		
 	// DOWN
@@ -181,21 +181,21 @@ function createArrowButtons() {
   arrowButtons.down.parent('game-container');
   applyStyles(arrowButtons.down, commonStyles);
   arrowButtons.down.mousePressed(() => (direction = [0, 1]));
-  arrowButtons.down.position(buttonSize + 10, height + buttonSize + 30);
+  arrowButtons.down.position(buttonSize + 15, height + buttonSize *2+10);
 		
 	// LEFT
   arrowButtons.left = createButton('◀');
   arrowButtons.left.parent('game-container');
   applyStyles(arrowButtons.left, commonStyles);
 	arrowButtons.left.mousePressed(() => (direction = [-1, 0]));
-  arrowButtons.left.position(10, height + buttonSize / 2 + 15);
+  arrowButtons.left.position(10, height + buttonSize +10);
 		
 	// RIGHT 
   arrowButtons.right = createButton('▶');
   arrowButtons.right.parent('game-container'); 
   applyStyles(arrowButtons.right, commonStyles);
   arrowButtons.right.mousePressed(() => (direction = [1, 0]));
-  arrowButtons.right.position(90, height + buttonSize / 2 + 15);
+  arrowButtons.right.position(100, height + buttonSize+10);
 }
 	
 // Helper function to apply styles to buttons
@@ -516,14 +516,14 @@ if (restartButton) {
 	// Update the score display
 	function updateScore(){
 		if (scoreDisplay) {
-        scoreDisplay.html(`score + ${score}`);
+        scoreDisplay.html(`score / ${score}`);
 		}
 }
 	
 function resizeGameElements() {
     const originalPositions = {
-        scoreDisplay: { x: AspectRatioWidth-80, y: 10 },
-        restartButton: { x: AspectRatioWidth -100, y: height + 80 },
+        scoreDisplay: { x: AspectRatioWidth-85, y: 10 },
+        restartButton: { x: AspectRatioWidth -100, y: height + 110 },
     }
 
     scoreDisplay.position(originalPositions.scoreDisplay.x, originalPositions.scoreDisplay.y);
