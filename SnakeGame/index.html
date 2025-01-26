@@ -31,12 +31,13 @@
     #header-container {
       width: 100%;
       max-width: 250px;
-      height: 50px;
-      background-color: rgb(255, 128, 0);
+      height: 60px;
+      background-image: url('header-image.png');
+      background-size: cover;
+      background-position: center;
       display: flex;
       justify-content: center;
       align-items: center;
-      font-family: 'HanyiSentyPagoda';
     }
 
     #game-container {
@@ -52,6 +53,9 @@
       max-width: 250px;
       height: 150px;
       background-color:rgb(255, 128, 0);
+      background-image: url('footer-image.png');
+      background-size: cover;
+      background-position: center;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -61,7 +65,7 @@
     canvas {
       display: block;
     }
-
+/*
     .header-title {
       font-size: 30px;
       font-family: 'HanyiSentyPagoda';
@@ -69,13 +73,13 @@
       color: white;
       margin: 0;
     }
+      */
 
   </style>
-  <script src="sketch_SnakeGameFull.js"></script>
+  <script src="sketch_SnakeGameFull - Copy.js"></script>
 </head>
 <body>
   <div id="header-container">
-    <p class="header-title">食得是福</p>
   </div>
   <div id="game-container">
     <!-- The p5.js canvas will be dynamically created here -->
