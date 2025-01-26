@@ -8,6 +8,7 @@ let items = []; // Array to store active symbols on the canvas
 let eatenSymbols = []; // Array to store the symbols the snake has eaten
 let margin = 2; // Margin for the red frame
 let customFont; 
+let englishFont;
 let symbolSizeMultiplier = 1; 
 let goldFoilGraphics;
 let currentPhrase = "";
@@ -17,64 +18,136 @@ const AspectRatioHeight = 400;
 
 // Variable for score
 let score = 0;
-let saveButton;
 let scoreDisplay;
+
+let startButton;
 let restartButton;
+let saveButton;
 let arrowButtons = {}; 
 
 let buttonSize = 40;
 let xOffset, yOffset; 
-let gameActive = true;
+let gameActive = false;
+
 
 function preload() {
     customFont  = loadFont('HanyiSentyPagodaRegular.ttf'); 
+    englishFont = loadFont('SnakeChan.otf');
 }
 
 function setup() {
 	//const scaleFactor = min(windowWidth / AspectRatioWidth, windowHeight / AspectRatioHeight);
 	createCanvas(AspectRatioWidth, AspectRatioHeight).parent('game-container');
 
+
 	cellSize = height / gridSizeY; 
-	initializeGame(); 
-	createUI();
+  createGoldFoilGraphics();
+
+  //save button
+	saveButton = createButton('Save Image');
+	saveButton.parent('game-container');
+  saveButton.style('font-family', 'SnakeChan');
+  saveButton.style('font-size', '20px');
+  saveButton.style('background', 'none'); 
+  saveButton.style('border', 'none');
+  saveButton.style('color', 'white');
+  saveButton.style('cursor', 'pointer');
+  saveButton.style('padding', '0');
+  saveButton.mouseOver(() => saveButton.style('color', 'rgb(87, 255, 152)')); 
+  saveButton.mouseOut(() => saveButton.style('color', 'white'));
+	saveButton.mousePressed(() => saveCanvas('snake_game', 'png'));
+  saveButton.position(width - 105, height + 20);
 	
-	//Add initial symbols
-	  for (let i = 0; i < 5; i++) {
-    items.push(generateNonOverlappingItem());
+	//arrom button
+	createArrowButtons();	
+
+  createStartPage();
+}
+
+
+function createStartPage() {
+  cleanupGame();
+  clear();
+
+   // Red background for Start page
+   background(250, 50, 0);
+
+   // Display gold foil pattern
+   image(goldFoilGraphics, 0, 0);
+
+  startButton = createButton('Start');
+  startButton.parent('game-container'); 
+  startButton.style('font-size', '45px');
+  startButton.style('background', 'none'); 
+  startButton.style('border', 'none'); 
+  startButton.style('color', 'white'); 
+  startButton.style('cursor', 'pointer');
+  startButton.style('padding', '0');
+  startButton.mouseOver(() => startButton.style('color', 'rgb(87, 255, 152)'));
+  startButton.mouseOut(() => startButton.style('color', 'white'));
+  startButton.style('font-family', 'SnakeChan');
+  startButton.position('center');
+
+  startButton.mousePressed(() => {
+      startButton.hide();
+      startGame();
+  });
+
+  currentPhrase = "";
+}
+
+function startGame() {
+  initializeGame();
+  createUI();
+
+  for (let i = 0; i < 5; i++) {
+      items.push(generateNonOverlappingItem());
   }
-	
-	frameRate(6); // Control the snake's speed
-	createGoldFoilGraphics();
-	resizeGameElements(); 
+
+  frameRate(6);
+  createGoldFoilGraphics();
+  resizeGameElements();
+  gameActive = true;
+
+  if (restartButton) {
+    restartButton.hide();
+}
+
+  loop();
 }
 
 //UI elements
 function createUI(){
 	//score display
-	scoreDisplay = createDiv(`祝福 Good Luck + ${score}`);
-	scoreDisplay.style('font-size', '12px');
-	scoreDisplay.style('font-weight', 'bold');
-	scoreDisplay.style('color', 'rgb(255, 215, 0)');
+	scoreDisplay = createDiv(`score + ${score}`);
+  scoreDisplay.style('font-family', 'SnakeChan');
+	scoreDisplay.style('font-size', '10px');
+	scoreDisplay.style('color', 'rgb(255, 255, 255)');
 	scoreDisplay.style('text-align', 'left');
-	//scoreDisplay.position(xOffset + 5, yOffset + 5);
-	scoreDisplay.parent('game-container'); //
-		
-	//save button
-	saveButton = createButton('Save Image');
-	saveButton.parent('game-container');
-	saveButton.position(10, 10);
-	saveButton.mousePressed(() => saveCanvas('snake_game', 'png'));
+	scoreDisplay.parent('game-container'); 
 	
-    
 	//restart button
 	restartButton = createButton('Restart');
-	restartButton.parent('game-container');
-	restartButton.position(100, 10); 
-	restartButton.mousePressed(restartGame);
-		
-	//arrom button
-	createArrowButtons();	
+  restartButton.parent('game-container');
+  restartButton.style('font-family', 'SnakeChan');
+  restartButton.style('font-size', '18px');
+  restartButton.style('background', 'none'); 
+  restartButton.style('border', 'none');
+  restartButton.style('color', 'white');
+  restartButton.style('cursor', 'pointer');
+  restartButton.style('padding', '0'); 
+  restartButton.mouseOver(() => restartButton.style('color', 'rgb(87, 255, 152)'));
+  restartButton.mouseOut(() => restartButton.style('color', 'white'));
+  restartButton.hide();
+  restartButton.mousePressed(() => {
+    cleanupGame();
+    restartButton.hide(); 
+    createStartPage();
+  });
+
 }
+
+
 
 //Arrow button
 function createArrowButtons() {
@@ -100,24 +173,29 @@ function createArrowButtons() {
 	arrowButtons.up.parent('game-container');
   applyStyles(arrowButtons.up, commonStyles);
   arrowButtons.up.mousePressed(() => (direction = [0, -1]));
+  arrowButtons.up.position(buttonSize + 10, height + 10);
+
 		
 	// DOWN
   arrowButtons.down = createButton('▼');
   arrowButtons.down.parent('game-container');
   applyStyles(arrowButtons.down, commonStyles);
   arrowButtons.down.mousePressed(() => (direction = [0, 1]));
+  arrowButtons.down.position(buttonSize + 10, height + buttonSize + 30);
 		
 	// LEFT
   arrowButtons.left = createButton('◀');
   arrowButtons.left.parent('game-container');
   applyStyles(arrowButtons.left, commonStyles);
 	arrowButtons.left.mousePressed(() => (direction = [-1, 0]));
+  arrowButtons.left.position(10, height + buttonSize / 2 + 15);
 		
 	// RIGHT 
   arrowButtons.right = createButton('▶');
   arrowButtons.right.parent('game-container'); 
   applyStyles(arrowButtons.right, commonStyles);
   arrowButtons.right.mousePressed(() => (direction = [1, 0]));
+  arrowButtons.right.position(90, height + buttonSize / 2 + 15);
 }
 	
 // Helper function to apply styles to buttons
@@ -141,15 +219,26 @@ function initializeGame() {
   const startY = floor(gridSizeY / 2);
   snake = [[startX, startY]];
 	
+  /*
   symbols.push(drawSmiley); 
   symbols.push(drawGoldCoin);
   symbols.push(drawRedEnvelope);
   symbols.push(drawFuDiamond); 
   symbols.push(drawFlower);
+  */
+  symbols = [drawSmiley, drawGoldCoin, drawRedEnvelope, drawFuDiamond, drawFlower];
+  items = [];
+  eatenSymbols = [];
+  score = 0;
+  direction = [0, 0];
+
 }
 
 //Draw Function
 function draw() {
+
+  if (!gameActive) return;
+
 	//Red canvas
   push();
   noStroke();
@@ -251,9 +340,9 @@ function draw() {
 		// Add the eaten symbol to the body
 		if (!checkIfEaten(newHead)) {
 			snake.pop();
-			if (eatenSymbols.length > snake.length - 1) {
-				eatenSymbols.pop(); 
-    }
+			//if (eatenSymbols.length > snake.length - 1) {
+			//	eatenSymbols.pop(); 
+   // }
   }
 }
 	
@@ -302,17 +391,20 @@ function getRandomPhrase() {
 }
 
 	//Game over
-	function gameOver() {
+
+  function gameOver() {
   noLoop();
+  gameActive = false;
+
+		if (currentPhrase === "") {
+			currentPhrase = getRandomPhrase();
+		}
+
   fill(0);
   textFont(customFont);
   textSize(height/5);
   textAlign(CENTER, CENTER);
-	
-	// Set the current phrase only if it's not already set
-		if (currentPhrase === "") {
-			currentPhrase = getRandomPhrase();
-		}
+
 	const verticalText = currentPhrase.split("");
   const charHeight = textSize() * 1.05; 
   const totalTextHeight = verticalText.length * charHeight;
@@ -323,7 +415,32 @@ function getRandomPhrase() {
   for (let i = 0; i < verticalText.length; i++) {
     text(verticalText[i], centerX, startY + i * charHeight);
 	}
+
+  restartButton.show();
 }
+
+function cleanupGame() {
+  // Clear the snake and items
+  snake = [];
+  items = [];
+  eatenSymbols = [];
+  direction = [0, 0];
+  score = 0;
+  currentPhrase = "";
+
+  if (scoreDisplay) {
+    scoreDisplay.remove();
+    scoreDisplay = null;
+}
+
+if (restartButton) {
+  restartButton.hide();
+}
+
+  noLoop();
+  clear(); 
+}
+
 	
 	function generateNonOverlappingItem() {
 		let x, y, isOverlapping;
@@ -396,95 +513,21 @@ function getRandomPhrase() {
 		}
 	}
 
-	//restart game
-	function restartGame(){
-		// Reset the current phrase
-    currentPhrase = "";
-		
-		initializeGame();
-		direction = [0,0];
-		createGoldFoilGraphics();
-		items = [];
-		eatenSymbols = [];
-		for (let i = 0; i < 5; i++) {
-			items.push(generateNonOverlappingItem());
-		}
-		score = 0;
-		updateScore();
-		
-		loop();
-	}
-	
 	// Update the score display
 	function updateScore(){
 		if (scoreDisplay) {
-        scoreDisplay.html(`祝福 Good Luck + ${score}`);
+        scoreDisplay.html(`score + ${score}`);
 		}
 }
 	
-//resize	
-/*	function resizeGameElements(){
-	
-	
-		const scaleFactor = height / AspectRatioHeight;
-		const newWidth = AspectRatioWidth * scaleFactor;
-    	const newHeight = AspectRatioHeight * scaleFactor;
-	
-		resizeCanvas(newWidth, newHeight);
-		cellSize = height / gridSizeY; 
-
-		// Ensure the snake's head is within bounds after resizing
-    const head = snake[0];
-    const headX = head[0] * cellSize;
-    const headY = head[1] * cellSize;
-		
-		// UI elements positioning using the scale factor
-    //const canvasX = width / 2;
-    //const canvasY = height / 2;
-		
-	scoreDisplay.position(10 * scaleFactor, 10 * scaleFactor);
-    saveButton.position(0 * scaleFactor, (-30) * scaleFactor);
-    restartButton.position(100 * scaleFactor, (-30) * scaleFactor);
-    
-    const buttonY =  height; 
-    //arrowButtons.up.position(xOffset , buttonY);
-    //arrowButtons.down.position(xOffset + buttonSize +10, buttonY);
-    //arrowButtons.left.position(xOffset+ buttonSize *2 +20, buttonY);
-    //arrowButtons.right.position(xOffset+buttonSize *3 +30, buttonY);
-	//arrowButtons.up.position(xOffset + buttonSize, buttonY);
-    //arrowButtons.down.position(xOffset + buttonSize, buttonY + buttonSize + 10);
-    //arrowButtons.left.position(xOffset, buttonY + buttonSize / 2);
-    //arrowButtons.right.position(xOffset + 80, buttonY + buttonSize / 2);
-	arrowButtons.up.position(buttonSize * scaleFactor, buttonY);
-    arrowButtons.down.position(buttonSize * scaleFactor, buttonY + buttonSize * scaleFactor + 10 * scaleFactor);
-    arrowButtons.left.position(0 * scaleFactor, buttonY + buttonSize * scaleFactor / 2);
-    arrowButtons.right.position(80 * scaleFactor, buttonY + buttonSize * scaleFactor / 2);
-}
-*/
-
 function resizeGameElements() {
-    // Original positions (in pixels)
     const originalPositions = {
-        scoreDisplay: { x: 10, y: 10 },
-        saveButton: { x: 0, y: -30 },
-        restartButton: { x: 100, y: -30 },
-        arrowButtons: {
-            up: { x: buttonSize, y: height },
-            down: { x: buttonSize, y: height + buttonSize + 10 },
-            left: { x: 0, y: height + buttonSize / 2 },
-            right: { x: 80, y: height + buttonSize / 2 },
-        }
-    };
+        scoreDisplay: { x: AspectRatioWidth-80, y: 10 },
+        restartButton: { x: AspectRatioWidth -100, y: height + 80 },
+    }
 
-    // Set initial positions without scaling
     scoreDisplay.position(originalPositions.scoreDisplay.x, originalPositions.scoreDisplay.y);
-    saveButton.position(originalPositions.saveButton.x, originalPositions.saveButton.y);
     restartButton.position(originalPositions.restartButton.x, originalPositions.restartButton.y);
-
-    arrowButtons.up.position(originalPositions.arrowButtons.up.x, originalPositions.arrowButtons.up.y);
-    arrowButtons.down.position(originalPositions.arrowButtons.down.x, originalPositions.arrowButtons.down.y);
-    arrowButtons.left.position(originalPositions.arrowButtons.left.x, originalPositions.arrowButtons.left.y);
-    arrowButtons.right.position(originalPositions.arrowButtons.right.x, originalPositions.arrowButtons.right.y);
 }
 
 
@@ -501,6 +544,8 @@ function windowResized() {
     // Resize UI elements
     resizeGameElements();
 }
+
+
 
 // Symbol Functions
 
