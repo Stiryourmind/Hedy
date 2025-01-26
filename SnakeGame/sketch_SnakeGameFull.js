@@ -1,12 +1,12 @@
-let snake = []; // Snake's initial position (center of the grid)
-let direction = [0, 0]; // Initial direction: no movement
-let gridSizeX = 15; // Total number of cells along the width
-let gridSizeY = 25; // Total number of cells along the height
-let cellSize; // Size of each cell (calculated dynamically)
-let symbols = []; // Array to store functions to draw symbols
-let items = []; // Array to store active symbols on the canvas
-let eatenSymbols = []; // Array to store the symbols the snake has eaten
-let margin = 2; // Margin for the red frame
+let snake = [];
+let direction = [0, 0];
+let gridSizeX = 15;
+let gridSizeY = 25; 
+let cellSize;
+let symbols = []; 
+let items = []; 
+let eatenSymbols = []; 
+let margin = 2; 
 let customFont; 
 let englishFont;
 let symbolSizeMultiplier = 1; 
@@ -16,7 +16,6 @@ let currentPhrase = "";
 const AspectRatioWidth = 250;
 const AspectRatioHeight = 400;
 
-// Variable for score
 let score = 0;
 let scoreDisplay;
 
@@ -35,10 +34,10 @@ function preload() {
     englishFont = loadFont('SnakeChan.otf');
 }
 
+///// Setup /////
 function setup() {
 	//const scaleFactor = min(windowWidth / AspectRatioWidth, windowHeight / AspectRatioHeight);
 	createCanvas(AspectRatioWidth, AspectRatioHeight).parent('game-container');
-
 
 	cellSize = height / gridSizeY; 
   createGoldFoilGraphics();
@@ -47,7 +46,7 @@ function setup() {
 	saveButton = createButton('Save Image<br>|');
 	saveButton.parent('game-container');
   saveButton.style('font-family', 'SnakeChan');
-  saveButton.style('font-size', '20px');
+  saveButton.style('font-size', '18px');
   saveButton.style('background', 'none'); 
   saveButton.style('border', 'none');
   saveButton.style('color', 'white');
@@ -60,11 +59,10 @@ function setup() {
 	
 	//arrom button
 	createArrowButtons();	
-
   createStartPage();
 }
 
-
+///// Start Page /////
 function createStartPage() {
   cleanupGame();
   clear();
@@ -87,7 +85,6 @@ function createStartPage() {
   startButton.mouseOut(() => startButton.style('color', 'white'));
   startButton.style('font-family', 'SnakeChan');
   startButton.position('center');
-
   startButton.mousePressed(() => {
       startButton.hide();
       startGame();
@@ -116,7 +113,7 @@ function startGame() {
   loop();
 }
 
-//UI elements
+/////UI elements /////
 function createUI(){
 	//score display
 	scoreDisplay = createDiv(`score / ${score}`);
@@ -130,7 +127,7 @@ function createUI(){
 	restartButton = createButton('Restart');
   restartButton.parent('game-container');
   restartButton.style('font-family', 'SnakeChan');
-  restartButton.style('font-size', '18px');
+  restartButton.style('font-size', '16px');
   restartButton.style('background', 'none'); 
   restartButton.style('border', 'none');
   restartButton.style('color', 'white');
@@ -147,9 +144,7 @@ function createUI(){
 
 }
 
-
-
-//Arrow button
+/////Arrow button /////
 function createArrowButtons() {
 	// Common styles for all buttons
 	const commonStyles = {
@@ -167,35 +162,33 @@ function createArrowButtons() {
         cursor: 'pointer',
 	};
 	
-	
 	// UP
 	arrowButtons.up = createButton('▲');
 	arrowButtons.up.parent('game-container');
   applyStyles(arrowButtons.up, commonStyles);
   arrowButtons.up.mousePressed(() => (direction = [0, -1]));
-  arrowButtons.up.position(buttonSize + 15, height + 10);
+  arrowButtons.up.position(buttonSize + 15, height + 15);
 
-		
 	// DOWN
   arrowButtons.down = createButton('▼');
   arrowButtons.down.parent('game-container');
   applyStyles(arrowButtons.down, commonStyles);
   arrowButtons.down.mousePressed(() => (direction = [0, 1]));
-  arrowButtons.down.position(buttonSize + 15, height + buttonSize *2+10);
+  arrowButtons.down.position(buttonSize + 15, height + buttonSize *2+15);
 		
 	// LEFT
   arrowButtons.left = createButton('◀');
   arrowButtons.left.parent('game-container');
   applyStyles(arrowButtons.left, commonStyles);
 	arrowButtons.left.mousePressed(() => (direction = [-1, 0]));
-  arrowButtons.left.position(10, height + buttonSize +10);
+  arrowButtons.left.position(10, height + buttonSize +15);
 		
 	// RIGHT 
   arrowButtons.right = createButton('▶');
   arrowButtons.right.parent('game-container'); 
   applyStyles(arrowButtons.right, commonStyles);
   arrowButtons.right.mousePressed(() => (direction = [1, 0]));
-  arrowButtons.right.position(100, height + buttonSize+10);
+  arrowButtons.right.position(100, height + buttonSize+15);
 }
 	
 // Helper function to apply styles to buttons
@@ -205,7 +198,7 @@ function applyStyles(button, styles) {
 	}
 }
 	
-  //Gold foil pattern
+  //Add Gold foil pattern
   function createGoldFoilGraphics(){
 		goldFoilGraphics = createGraphics(width, height);
 		const goldFoilCount = Math.floor(random(200, 500));
@@ -213,19 +206,12 @@ function applyStyles(button, styles) {
 	}
 	
 
-//Initialize game state
+/////Initialize game state /////
 function initializeGame() {
   const startX = floor(gridSizeX / 2);
   const startY = floor(gridSizeY / 2);
   snake = [[startX, startY]];
 	
-  /*
-  symbols.push(drawSmiley); 
-  symbols.push(drawGoldCoin);
-  symbols.push(drawRedEnvelope);
-  symbols.push(drawFuDiamond); 
-  symbols.push(drawFlower);
-  */
   symbols = [drawSmiley, drawGoldCoin, drawRedEnvelope, drawFuDiamond, drawFlower];
   items = [];
   eatenSymbols = [];
@@ -234,7 +220,7 @@ function initializeGame() {
 
 }
 
-//Draw Function
+/////Draw Function /////
 function draw() {
 
   if (!gameActive) return;
@@ -258,7 +244,6 @@ function draw() {
     );
   }
 
-  // Draw the snake
   drawSnake();
 	
 // Check if the game is over
@@ -275,7 +260,7 @@ function draw() {
 	checkCollisions();
 }
 
-	// Draw the snake
+	///// Draw the snake /////
 	function drawSnake() {
 		for (let i = 0; i < snake.length; i++) {
 			const [x, y] = snake[i];
@@ -384,14 +369,13 @@ function draw() {
 		}
 	}
 	
-//Random phrase
+/////Random phrase /////
 function getRandomPhrase() {
     const randomIndex = Math.floor(Math.random() * phrases.length);
     return phrases[randomIndex];
 }
 
-	//Game over
-
+/////Game over /////
   function gameOver() {
   noLoop();
   gameActive = false;
@@ -419,6 +403,7 @@ function getRandomPhrase() {
   restartButton.show();
 }
 
+///// clean up canvas /////
 function cleanupGame() {
   // Clear the snake and items
   snake = [];
@@ -441,7 +426,6 @@ if (restartButton) {
   clear(); 
 }
 
-	
 	function generateNonOverlappingItem() {
 		let x, y, isOverlapping;
 		
@@ -459,7 +443,7 @@ if (restartButton) {
 		return { x, y, type, symbol: symbols[type] };
 	}
 	
-	// Add gold foil
+	///// Gold Foil /////
 	function addGoldFoil(graphics, count) {
 		for (let i = 0; i < count; i++) {
 			let x = random(margin, graphics.width- margin);
@@ -520,17 +504,16 @@ if (restartButton) {
 		}
 }
 	
+///// Resize /////
 function resizeGameElements() {
     const originalPositions = {
         scoreDisplay: { x: AspectRatioWidth-85, y: 10 },
-        restartButton: { x: AspectRatioWidth -100, y: height + 110 },
+        restartButton: { x: AspectRatioWidth -95, y: height + 110 },
     }
 
     scoreDisplay.position(originalPositions.scoreDisplay.x, originalPositions.scoreDisplay.y);
     restartButton.position(originalPositions.restartButton.x, originalPositions.restartButton.y);
 }
-
-
 
 function windowResized() {
 	const scaleFactor = min(windowWidth / AspectRatioWidth, windowHeight / AspectRatioHeight);
@@ -547,7 +530,7 @@ function windowResized() {
 
 
 
-// Symbol Functions
+/////Symbol Functions/////
 
 function drawSmiley(x, y, size) {
 	size *= symbolSizeMultiplier; 
@@ -677,12 +660,14 @@ function drawFlower(x, y, size) {
   pop();
 }
 
+///// Phrases Array ///// 
+
 const phrases = [
   "蛇年快樂",
   "日日精彩",
   "心中有夢",
   "無憂無慮",
-  "冇煩惱",
+  "煩惱消散",
   "隨心所欲",
   "多姿多彩",
   "輕鬆自在",
@@ -693,7 +678,7 @@ const phrases = [
   "幸運加倍",
   "唔洗OT",
   "水浸荷包",
-  "發大達",
+  "發個大達",
   "滿載而歸",
   "身體健康",
   "賺到笑",
@@ -709,5 +694,5 @@ const phrases = [
   "食飽瞓飽",
   "隨心所欲",
   "贏到手軟",
-  "笑唔停"
+  "笑到唔停"
 ];
