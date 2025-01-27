@@ -155,7 +155,7 @@ function createArrowButtons() {
 	const commonStyles = {
         width: `${buttonSize}px`,
         height: `${buttonSize}px`,
-        position: 'absolute',
+        position: 'relative',
         background: 'rgb(40,40,40)',
         border: '2px solid rgb(150, 150, 150)',
         borderRadius: '8px',
