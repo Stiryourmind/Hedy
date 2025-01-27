@@ -155,7 +155,7 @@ function createArrowButtons() {
 	const commonStyles = {
         width: `${buttonSize}px`,
         height: `${buttonSize}px`,
-        position: 'relative',
+        position: 'absolute',
         background: 'rgb(40,40,40)',
         border: '2px solid rgb(150, 150, 150)',
         borderRadius: '8px',
@@ -231,20 +231,15 @@ function updateButtonDisplay(state) {
   if (state === 'start' || state === 'playing') {
       Object.values(arrowButtons).forEach((button) => {
           button.show();
-          
       });
 
       if (saveButton) saveButton.hide();
       if (restartButton) restartButton.hide();
   } else if (state === 'gameOver') {
-      // Hide arrow buttons
       Object.values(arrowButtons).forEach((button) => button.hide());
-
-      // Show save and restart buttons in the right layout
       saveButton.show();
       restartButton.show();
   } else if (state === 'restart') {
-      // Show arrow buttons again and center them
       Object.values(arrowButtons).forEach((button) => {
           button.show();
       });
@@ -553,10 +548,10 @@ function resizeGameElements() {
     restartButton.position(originalPositions.restartButton.x, originalPositions.restartButton.y);
 
       // Recalculate positions for arrow buttons
-      arrowButtons.up.position(width/2 - buttonSize +15, height + 15);
-      arrowButtons.down.position(width/2 - buttonSize +15, height + buttonSize *2+15);
-      arrowButtons.left.position(width/2 - buttonSize *2 +10, height + buttonSize +15);
-      arrowButtons.right.position(width/2 + buttonSize/2 +2, height + buttonSize+15);
+      //arrowButtons.up.position(width/2 - buttonSize +15, height + 15);
+      //arrowButtons.down.position(width/2 - buttonSize +15, height + buttonSize *2+15);
+      //arrowButtons.left.position(width/2 - buttonSize *2 +10, height + buttonSize +15);
+      //arrowButtons.right.position(width/2 + buttonSize/2 +2, height + buttonSize+15);
       
 }
 
