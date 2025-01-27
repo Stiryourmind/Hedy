@@ -178,14 +178,14 @@ function createArrowButtons() {
   applyStyles(arrowButtons.down, commonStyles);
   arrowButtons.down.mousePressed(() => (direction = [0, 1]));
   arrowButtons.down.position(width/2 - buttonSize +15, height + buttonSize *2+15);
-		
+
 	// LEFT
   arrowButtons.left = createButton('◀');
   arrowButtons.left.parent('game-container');
   applyStyles(arrowButtons.left, commonStyles);
 	arrowButtons.left.mousePressed(() => (direction = [-1, 0]));
   arrowButtons.left.position(width/2 - buttonSize *2 +10, height + buttonSize +15);
-		
+
 	// RIGHT 
   arrowButtons.right = createButton('▶');
   arrowButtons.right.parent('game-container'); 
@@ -228,6 +228,7 @@ function updateButtonDisplay(state) {
   if (state === 'start' || state === 'playing') {
       Object.values(arrowButtons).forEach((button) => {
           button.show();
+          
       });
 
       if (saveButton) saveButton.hide();
@@ -544,6 +545,13 @@ function resizeGameElements() {
 
     scoreDisplay.position(originalPositions.scoreDisplay.x, originalPositions.scoreDisplay.y);
     restartButton.position(originalPositions.restartButton.x, originalPositions.restartButton.y);
+
+      // Recalculate positions for arrow buttons
+      arrowButtons.up.position(width/2 - buttonSize +15, height + 15);
+      arrowButtons.down.position(width/2 - buttonSize +15, height + buttonSize *2+15);
+      arrowButtons.left.position(width/2 - buttonSize *2 +10, height + buttonSize +15);
+      arrowButtons.right.position(width/2 + buttonSize/2 +2, height + buttonSize+15);
+      
 }
 
 function windowResized() {
@@ -558,7 +566,6 @@ function windowResized() {
     // Resize UI elements
     resizeGameElements();
 }
-
 
 
 /////Symbol Functions/////
