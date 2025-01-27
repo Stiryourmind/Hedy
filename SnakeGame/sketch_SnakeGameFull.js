@@ -42,21 +42,6 @@ function setup() {
 	cellSize = height / gridSizeY; 
   createGoldFoilGraphics();
 
-  //save button
-	saveButton = createButton('Save Image<br>|');
-	saveButton.parent('game-container');
-  saveButton.style('font-family', 'SnakeChan');
-  saveButton.style('font-size', '18px');
-  saveButton.style('background', 'none'); 
-  saveButton.style('border', 'none');
-  saveButton.style('color', 'white');
-  saveButton.style('cursor', 'pointer');
-  saveButton.style('padding', '0');
-  saveButton.mouseOver(() => saveButton.style('color', 'rgb(87, 255, 152)')); 
-  saveButton.mouseOut(() => saveButton.style('color', 'white'));
-	saveButton.mousePressed(() => saveCanvas('snake_game', 'png'));
-  saveButton.position(width - 105, height + 40);
-	
 	//arrom button
 	createArrowButtons();	
   createStartPage();
@@ -73,7 +58,7 @@ function createStartPage() {
    // Display gold foil pattern
    image(goldFoilGraphics, 0, 0);
 
-  startButton = createButton('Start<br>}');
+  startButton = createButton('Start');
   startButton.parent('game-container'); 
   startButton.style('font-size', '45px');
   startButton.style('background', 'none'); 
@@ -81,13 +66,14 @@ function createStartPage() {
   startButton.style('color', 'white'); 
   startButton.style('cursor', 'pointer');
   startButton.style('padding', '0');
-  startButton.mouseOver(() => startButton.style('color', 'rgb(87, 255, 152)'));
+  startButton.mouseOver(() => startButton.style('color', 'rgb(255, 215, 0)'));
   startButton.mouseOut(() => startButton.style('color', 'white'));
   startButton.style('font-family', 'SnakeChan');
   startButton.position('center');
   startButton.mousePressed(() => {
       startButton.hide();
       startGame();
+      updateButtonDisplay('start');
   });
 
   currentPhrase = "";
@@ -101,7 +87,7 @@ function startGame() {
       items.push(generateNonOverlappingItem());
   }
 
-  frameRate(6);
+  frameRate(8);
   createGoldFoilGraphics();
   resizeGameElements();
   gameActive = true;
@@ -123,23 +109,40 @@ function createUI(){
 	scoreDisplay.style('text-align', 'left');
 	scoreDisplay.parent('game-container'); 
 	
+  
+  //save button
+	saveButton = createButton('Save Image');
+	saveButton.parent('game-container');
+  saveButton.style('font-family', 'SnakeChan');
+  saveButton.style('font-size', '25px');
+  saveButton.style('background', 'none'); 
+  saveButton.style('border', 'none');
+  saveButton.style('color', 'white');
+  saveButton.style('cursor', 'pointer');
+  saveButton.style('padding', '0');
+  saveButton.mouseOver(() => saveButton.style('color', 'rgb(255, 215, 0)')); 
+  saveButton.mouseOut(() => saveButton.style('color', 'white'));
+	saveButton.mousePressed(() => saveCanvas('snake_game', 'png'));
+  saveButton.position(AspectRatioWidth/2 - buttonSize*2 -20, height+30);
+	
 	//restart button
 	restartButton = createButton('Restart');
   restartButton.parent('game-container');
   restartButton.style('font-family', 'SnakeChan');
-  restartButton.style('font-size', '16px');
+  restartButton.style('font-size', '25px');
   restartButton.style('background', 'none'); 
   restartButton.style('border', 'none');
   restartButton.style('color', 'white');
   restartButton.style('cursor', 'pointer');
   restartButton.style('padding', '0'); 
-  restartButton.mouseOver(() => restartButton.style('color', 'rgb(87, 255, 152)'));
+  restartButton.mouseOver(() => restartButton.style('color', 'rgb(255, 215, 0)'));
   restartButton.mouseOut(() => restartButton.style('color', 'white'));
   restartButton.hide();
   restartButton.mousePressed(() => {
     cleanupGame();
-    restartButton.hide(); 
+    //restartButton.hide(); 
     createStartPage();
+    updateButtonDisplay('restart');
   });
 
 }
@@ -150,12 +153,12 @@ function createArrowButtons() {
 	const commonStyles = {
         width: `${buttonSize}px`,
         height: `${buttonSize}px`,
-        background: 'rgb(250, 50, 0)',
-        border: '2px solid rgb(255, 215, 0)',
+        background: 'rgb(40,40,40)',
+        border: '2px solid rgb(150, 150, 150)',
         borderRadius: '8px',
         textAlign: 'center',
         fontSize: `${buttonSize * 0.5}px`,
-        color: 'white',
+        color: 'rgb(255, 215, 0)',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
@@ -167,28 +170,28 @@ function createArrowButtons() {
 	arrowButtons.up.parent('game-container');
   applyStyles(arrowButtons.up, commonStyles);
   arrowButtons.up.mousePressed(() => (direction = [0, -1]));
-  arrowButtons.up.position(buttonSize + 15, height + 15);
+  arrowButtons.up.position(width/2 - buttonSize +15, height + 15);
 
 	// DOWN
   arrowButtons.down = createButton('▼');
   arrowButtons.down.parent('game-container');
   applyStyles(arrowButtons.down, commonStyles);
   arrowButtons.down.mousePressed(() => (direction = [0, 1]));
-  arrowButtons.down.position(buttonSize + 15, height + buttonSize *2+15);
+  arrowButtons.down.position(width/2 - buttonSize +15, height + buttonSize *2+15);
 		
 	// LEFT
   arrowButtons.left = createButton('◀');
   arrowButtons.left.parent('game-container');
   applyStyles(arrowButtons.left, commonStyles);
 	arrowButtons.left.mousePressed(() => (direction = [-1, 0]));
-  arrowButtons.left.position(10, height + buttonSize +15);
+  arrowButtons.left.position(width/2 - buttonSize *2 +10, height + buttonSize +15);
 		
 	// RIGHT 
   arrowButtons.right = createButton('▶');
   arrowButtons.right.parent('game-container'); 
   applyStyles(arrowButtons.right, commonStyles);
   arrowButtons.right.mousePressed(() => (direction = [1, 0]));
-  arrowButtons.right.position(100, height + buttonSize+15);
+  arrowButtons.right.position(width/2 + buttonSize/2 +2, height + buttonSize+15);
 }
 	
 // Helper function to apply styles to buttons
@@ -218,6 +221,34 @@ function initializeGame() {
   score = 0;
   direction = [0, 0];
 
+}
+
+///// updateButtonDisplay /////
+function updateButtonDisplay(state) {
+  if (state === 'start' || state === 'playing') {
+      Object.values(arrowButtons).forEach((button) => {
+          button.show();
+      });
+
+      if (saveButton) saveButton.hide();
+      if (restartButton) restartButton.hide();
+  } else if (state === 'gameOver') {
+      // Hide arrow buttons
+      Object.values(arrowButtons).forEach((button) => button.hide());
+
+      // Show save and restart buttons in the right layout
+      saveButton.show();
+      restartButton.show();
+  } else if (state === 'restart') {
+      // Show arrow buttons again and center them
+      Object.values(arrowButtons).forEach((button) => {
+          button.show();
+      });
+
+      // Hide save and restart buttons
+      if (saveButton) saveButton.hide();
+      if (restartButton) restartButton.hide();
+  }
 }
 
 /////Draw Function /////
@@ -399,8 +430,7 @@ function getRandomPhrase() {
   for (let i = 0; i < verticalText.length; i++) {
     text(verticalText[i], centerX, startY + i * charHeight);
 	}
-
-  restartButton.show();
+  updateButtonDisplay('gameOver');
 }
 
 ///// clean up canvas /////
@@ -468,28 +498,28 @@ if (restartButton) {
 	function keyPressed() {
 		if (keyCode === UP_ARROW && direction[1] === 0) {
 			direction = [0, -1];
-    	arrowButtons.up.style('background', 'rgb(180,36,0)');
+    	arrowButtons.up.style('background', 'rgb(150,150,150)');
 		} else if (keyCode === DOWN_ARROW && direction[1] === 0) {
 			direction = [0, 1];
-			arrowButtons.down.style('background', 'rgb(180,36,0)');
+			arrowButtons.down.style('background', 'rgb(150,150,150)');
   	} else if (keyCode === LEFT_ARROW && direction[0] === 0) {
     	direction = [-1, 0];
-    	arrowButtons.left.style('background', 'rgb(180,36,0)');
+    	arrowButtons.left.style('background', 'rgb(150,150,150)');
   	} else if (keyCode === RIGHT_ARROW && direction[0] === 0) {
     	direction = [1, 0];
-    	arrowButtons.right.style('background', 'rgb(180,36,0)');
+    	arrowButtons.right.style('background', 'rgb(150,150,150)');
 		}
 	}
 	
 	function keyReleased() {
   	if (keyCode === UP_ARROW) {
-    	arrowButtons.up.style('background', 'rgb(250, 50, 0)');
+    	arrowButtons.up.style('background', 'rgb(40,40,40)');
   	} else if (keyCode === DOWN_ARROW) {
-    	arrowButtons.down.style('background', 'rgb(250, 50, 0)');
+    	arrowButtons.down.style('background', 'rgb(40,40,40)');
   	} else if (keyCode === LEFT_ARROW) {
-    	arrowButtons.left.style('background', 'rgb(250, 50, 0)');
+    	arrowButtons.left.style('background', 'rgb(40,40,40)');
   	} else if (keyCode === RIGHT_ARROW) {
-    	arrowButtons.right.style('background', 'rgb(250, 50, 0)');
+    	arrowButtons.right.style('background', 'rgb(40,40,40)');
   	} else if (key === 'S' || key === 's') {
     	if (!isLooping()) {
       	saveCanvas('snake_game', 'png'); 
@@ -508,7 +538,7 @@ if (restartButton) {
 function resizeGameElements() {
     const originalPositions = {
         scoreDisplay: { x: AspectRatioWidth-85, y: 10 },
-        restartButton: { x: AspectRatioWidth -95, y: height + 110 },
+        restartButton: { x: AspectRatioWidth/2- buttonSize -30, y: height + 90 },
     }
 
     scoreDisplay.position(originalPositions.scoreDisplay.x, originalPositions.scoreDisplay.y);
