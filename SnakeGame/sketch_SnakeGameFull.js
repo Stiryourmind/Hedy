@@ -73,6 +73,7 @@ function createStartPage() {
   startButton.mousePressed(() => {
       startButton.hide();
       startGame();
+      resizeGameElements();
       updateButtonDisplay('start');
   });
 
@@ -82,6 +83,7 @@ function createStartPage() {
 function startGame() {
   initializeGame();
   createUI();
+  createArrowButtons(); 
 
   for (let i = 0; i < 5; i++) {
       items.push(generateNonOverlappingItem());
@@ -153,6 +155,7 @@ function createArrowButtons() {
 	const commonStyles = {
         width: `${buttonSize}px`,
         height: `${buttonSize}px`,
+        position: 'absolute',
         background: 'rgb(40,40,40)',
         border: '2px solid rgb(150, 150, 150)',
         borderRadius: '8px',
@@ -444,6 +447,8 @@ function cleanupGame() {
   direction = [0, 0];
   score = 0;
   currentPhrase = "";
+  gameActive = false;
+  
 
   if (scoreDisplay) {
     scoreDisplay.remove();
@@ -453,6 +458,7 @@ function cleanupGame() {
 if (restartButton) {
   restartButton.hide();
 }
+Object.values(arrowButtons).forEach((button) => button.remove());
 
   noLoop();
   clear(); 
