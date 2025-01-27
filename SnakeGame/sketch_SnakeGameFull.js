@@ -87,7 +87,7 @@ function startGame() {
       items.push(generateNonOverlappingItem());
   }
 
-  frameRate(8);
+  frameRate(6);
   createGoldFoilGraphics();
   resizeGameElements();
   gameActive = true;
@@ -123,7 +123,7 @@ function createUI(){
   saveButton.mouseOver(() => saveButton.style('color', 'rgb(255, 215, 0)')); 
   saveButton.mouseOut(() => saveButton.style('color', 'white'));
 	saveButton.mousePressed(() => saveCanvas('snake_game', 'png'));
-  saveButton.position(AspectRatioWidth/2 - buttonSize*2 -20, height+30);
+  saveButton.position(AspectRatioWidth/2 - buttonSize*2 -12, height+30);
 	
 	//restart button
 	restartButton = createButton('Restart');
@@ -249,6 +249,7 @@ function updateButtonDisplay(state) {
       if (saveButton) saveButton.hide();
       if (restartButton) restartButton.hide();
   }
+
 }
 
 /////Draw Function /////
