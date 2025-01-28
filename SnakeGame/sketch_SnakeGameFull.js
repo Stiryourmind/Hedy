@@ -110,7 +110,7 @@ function createUI(){
 	saveButton = createButton('Save Image');
 	saveButton.parent('game-container');
   saveButton.style('font-family', 'Silkscreen');
-  saveButton.style('font-size', '15px');
+  saveButton.style('font-size', '20px');
   saveButton.style('background', 'none'); 
   saveButton.style('border', 'none');
   saveButton.style('color', 'white');
@@ -119,13 +119,13 @@ function createUI(){
   saveButton.mouseOver(() => saveButton.style('color', 'rgb(255, 215, 0)')); 
   saveButton.mouseOut(() => saveButton.style('color', 'white'));
 	saveButton.mousePressed(() => saveCanvas('snake_game', 'png'));
-  saveButton.position((windowWidth-220),(10));
+  saveButton.position((windowWidth-250),(10));
 	
 	//restart button
 	restartButton = createButton('Restart');
   restartButton.parent('game-container');
   restartButton.style('font-family', 'Silkscreen');
-  restartButton.style('font-size', '15px');
+  restartButton.style('font-size', '20px');
   restartButton.style('background', 'none'); 
   restartButton.style('border', 'none');
   restartButton.style('color', 'white');
@@ -134,7 +134,7 @@ function createUI(){
   restartButton.mouseOver(() => restartButton.style('color', 'rgb(255, 215, 0)'));
   restartButton.mouseOut(() => restartButton.style('color', 'white'));
   restartButton.hide();
-  restartButton.position((windowWidth-220),(30));
+  restartButton.position((windowWidth-250),(50));
   restartButton.mousePressed(() => {
     cleanupGame();
     //restartButton.hide(); 
