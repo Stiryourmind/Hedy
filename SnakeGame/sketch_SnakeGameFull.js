@@ -1,8 +1,9 @@
 let snake = [];
 let direction = [0, 0];
-let gridSizeX = 15;
-let gridSizeY = 25; 
-let cellSize;
+let gridSizeX;
+let gridSizeY; 
+let cellSizeX;
+let cellSizeY;
 let symbols = []; 
 let items = []; 
 let eatenSymbols = []; 
@@ -15,9 +16,6 @@ let currentPhrase = "";
 
 const AspectRatioWidth = 250;
 const AspectRatioHeight = 400;
-
-let score = 0;
-let scoreDisplay;
 
 let startButton;
 let restartButton;
@@ -36,10 +34,14 @@ function preload() {
 
 ///// Setup /////
 function setup() {
-	//const scaleFactor = min(windowWidth / AspectRatioWidth, windowHeight / AspectRatioHeight);
-	createCanvas(AspectRatioWidth, AspectRatioHeight).parent('game-container');
+  gridSizeX = windowWidth/30;
+  gridSizeY = windowHeight/30;
 
-	cellSize = height / gridSizeY; 
+	//const scaleFactor = min(windowWidth / AspectRatioWidth, windowHeight / AspectRatioHeight);
+	createCanvas(windowWidth-100, windowHeight-100).parent('game-container');
+ 
+	cellSizeX = width / gridSizeX; 
+  cellSizeY = height / gridSizeY; 
   createGoldFoilGraphics();
 
 	//arrom button
@@ -68,7 +70,7 @@ function createStartPage() {
   startButton.style('padding', '0');
   startButton.mouseOver(() => startButton.style('color', 'rgb(255, 215, 0)'));
   startButton.mouseOut(() => startButton.style('color', 'white'));
-  startButton.style('font-family', 'SnakeChan');
+  startButton.style('font-family', 'Silkscreen');
   startButton.position('center');
   startButton.mousePressed(() => {
       startButton.hide();
@@ -85,7 +87,7 @@ function startGame() {
   createUI();
   createArrowButtons(); 
 
-  for (let i = 0; i < 5; i++) {
+  for (let i = 0; i < 10; i++) {
       items.push(generateNonOverlappingItem());
   }
 
@@ -103,20 +105,12 @@ function startGame() {
 
 /////UI elements /////
 function createUI(){
-	//score display
-	scoreDisplay = createDiv(`score / ${score}`);
-  scoreDisplay.style('font-family', 'SnakeChan');
-	scoreDisplay.style('font-size', '10px');
-	scoreDisplay.style('color', 'rgb(255, 255, 255)');
-	scoreDisplay.style('text-align', 'left');
-	scoreDisplay.parent('game-container'); 
-	
-  
+
   //save button
 	saveButton = createButton('Save Image');
 	saveButton.parent('game-container');
-  saveButton.style('font-family', 'SnakeChan');
-  saveButton.style('font-size', '25px');
+  saveButton.style('font-family', 'Silkscreen');
+  saveButton.style('font-size', '15px');
   saveButton.style('background', 'none'); 
   saveButton.style('border', 'none');
   saveButton.style('color', 'white');
@@ -125,13 +119,13 @@ function createUI(){
   saveButton.mouseOver(() => saveButton.style('color', 'rgb(255, 215, 0)')); 
   saveButton.mouseOut(() => saveButton.style('color', 'white'));
 	saveButton.mousePressed(() => saveCanvas('snake_game', 'png'));
-  saveButton.position(AspectRatioWidth/2 - buttonSize*2 -12, height+30);
+  saveButton.position((windowWidth-220),(10));
 	
 	//restart button
 	restartButton = createButton('Restart');
   restartButton.parent('game-container');
-  restartButton.style('font-family', 'SnakeChan');
-  restartButton.style('font-size', '25px');
+  restartButton.style('font-family', 'Silkscreen');
+  restartButton.style('font-size', '15px');
   restartButton.style('background', 'none'); 
   restartButton.style('border', 'none');
   restartButton.style('color', 'white');
@@ -140,6 +134,7 @@ function createUI(){
   restartButton.mouseOver(() => restartButton.style('color', 'rgb(255, 215, 0)'));
   restartButton.mouseOut(() => restartButton.style('color', 'white'));
   restartButton.hide();
+  restartButton.position((windowWidth-220),(30));
   restartButton.mousePressed(() => {
     cleanupGame();
     //restartButton.hide(); 
@@ -155,7 +150,6 @@ function createArrowButtons() {
 	const commonStyles = {
         width: `${buttonSize}px`,
         height: `${buttonSize}px`,
-        position: 'absolute',
         background: 'rgb(40,40,40)',
         border: '2px solid rgb(150, 150, 150)',
         borderRadius: '8px',
@@ -167,34 +161,33 @@ function createArrowButtons() {
         alignItems: 'center',
         cursor: 'pointer',
 	};
-	
 	// UP
 	arrowButtons.up = createButton('▲');
 	arrowButtons.up.parent('game-container');
   applyStyles(arrowButtons.up, commonStyles);
   arrowButtons.up.mousePressed(() => (direction = [0, -1]));
-  arrowButtons.up.position(width/2 - buttonSize +15, height + 15);
+  arrowButtons.up.position((windowWidth-100)/2 -buttonSize/2,(windowHeight-100)-buttonSize*3.5);
 
 	// DOWN
   arrowButtons.down = createButton('▼');
   arrowButtons.down.parent('game-container');
   applyStyles(arrowButtons.down, commonStyles);
   arrowButtons.down.mousePressed(() => (direction = [0, 1]));
-  arrowButtons.down.position(width/2 - buttonSize +15, height + buttonSize *2+15);
+  arrowButtons.down.position((windowWidth-100)/2 -buttonSize/2,(windowHeight-100)-buttonSize*1.5);
 
 	// LEFT
   arrowButtons.left = createButton('◀');
   arrowButtons.left.parent('game-container');
   applyStyles(arrowButtons.left, commonStyles);
 	arrowButtons.left.mousePressed(() => (direction = [-1, 0]));
-  arrowButtons.left.position(width/2 - buttonSize *2 +10, height + buttonSize +15);
+  arrowButtons.left.position((windowWidth-100)/2 -buttonSize*1.5,(windowHeight-100)-buttonSize*2.5);
 
 	// RIGHT 
   arrowButtons.right = createButton('▶');
   arrowButtons.right.parent('game-container'); 
   applyStyles(arrowButtons.right, commonStyles);
   arrowButtons.right.mousePressed(() => (direction = [1, 0]));
-  arrowButtons.right.position(width/2 + buttonSize/2 +2, height + buttonSize+15);
+  arrowButtons.right.position((windowWidth-100)/2 +buttonSize*0.5,(windowHeight-100)-buttonSize*2.5);
 }
 	
 // Helper function to apply styles to buttons
@@ -221,7 +214,8 @@ function initializeGame() {
   symbols = [drawSmiley, drawGoldCoin, drawRedEnvelope, drawFuDiamond, drawFlower];
   items = [];
   eatenSymbols = [];
-  score = 0;
+  score = 0 ;
+  updateScore2();
   direction = [0, 0];
 
 }
@@ -269,9 +263,9 @@ function draw() {
 	// Draw all active items
   for (let item of items) {
     item.symbol(
-      item.x * cellSize + cellSize / 2,
-      item.y * cellSize + cellSize / 2,
-      cellSize * 1
+      item.x * cellSizeX + cellSizeX / 2,
+      item.y * cellSizeY + cellSizeY / 2,
+      cellSizeX * 1
     );
   }
 
@@ -311,18 +305,18 @@ function draw() {
 		
 		fill(255, 204, 0);
 		noStroke();
-    rect(x * cellSize, y * cellSize, cellSize, cellSize, 20); // Rounded head
+    rect(x * cellSizeX, y * cellSizeY, cellSizeX, cellSizeY, 20); // Rounded head
 		
 		
 		// Snake eyes
 		fill(250, 50, 0); 
 		noStroke();
-		const eyeOffsetX = cellSize * 0.3;
-		const eyeOffsetY = cellSize * 0.25;
-		const eyeSize = cellSize * 0.2;
+		const eyeOffsetX = cellSizeX * 0.3;
+		const eyeOffsetY = cellSizeY * 0.25;
+		const eyeSize = cellSizeX * 0.2;
 		
-		circle(x * cellSize + eyeOffsetX, y * cellSize + eyeOffsetY, eyeSize); //left eye 
-		circle(x * cellSize + cellSize - eyeOffsetX, y * cellSize + eyeOffsetY, eyeSize); //right eye 
+		circle(x * cellSizeX + eyeOffsetX, y * cellSizeY + eyeOffsetY, eyeSize); //left eye 
+		circle(x * cellSizeX + cellSizeX - eyeOffsetX, y * cellSizeY + eyeOffsetY, eyeSize); //right eye 
 		
 		pop();
 	}
@@ -334,15 +328,15 @@ function draw() {
 		if (i - 1 < eatenSymbols.length) {
       const symbol = eatenSymbols[i - 1];
 			symbol(
-        x * cellSize + cellSize / 2,
-        y * cellSize + cellSize / 2,
-        cellSize * 0.85
+        x * cellSizeX + cellSizeX / 2,
+        y * cellSizeY + cellSizeY / 2,
+        cellSizeX * 0.85
 			);
 		} else {
       push();
       fill(150);
       noStroke();
-      rect(x * cellSize, y * cellSize, cellSize, cellSize);
+      rect(x * cellSizeX, y * cellSizeY, cellSizeX, cellSizeY);
 		}
       pop();
 	}
@@ -370,7 +364,7 @@ function draw() {
       	items.splice(i, 1); // Remove the item from the canvas
       	items.push(generateNonOverlappingItem()); // Add a new random item to the canvas
 				score++; // Increase the score
-				updateScore();
+        updateScore2();
       	return true;
 			}
 		}
@@ -380,8 +374,8 @@ function draw() {
 	// Check for collisions with the frame/ itself
 	function checkCollisions() {
 		const head = snake[0];
-  	const headX = head[0] * cellSize;
-  	const headY = head[1] * cellSize;
+  	const headX = head[0] * cellSizeX;
+  	const headY = head[1] * cellSizeY;
 		
 		if (
 			headX < 0 || // Left boundary
@@ -441,14 +435,10 @@ function cleanupGame() {
   eatenSymbols = [];
   direction = [0, 0];
   score = 0;
+  updateScore2();
   currentPhrase = "";
   gameActive = false;
   
-
-  if (scoreDisplay) {
-    scoreDisplay.remove();
-    scoreDisplay = null;
-}
 
 if (restartButton) {
   restartButton.hide();
@@ -463,8 +453,8 @@ Object.values(arrowButtons).forEach((button) => button.remove());
 		let x, y, isOverlapping;
 		
 		do {
-			x = floor(random(margin / cellSize, gridSizeX - margin / cellSize));
-			y = floor(random(margin / cellSize, gridSizeY - margin / cellSize));
+			x = floor(random(margin / cellSizeX, gridSizeX - margin / cellSizeX));
+			y = floor(random(margin / cellSizeY, gridSizeY - margin / cellSizeY));
 			
 			// Ensure the new item does not overlap the snake or other items
 			isOverlapping =
@@ -531,24 +521,25 @@ Object.values(arrowButtons).forEach((button) => button.remove());
 	}
 
 	// Update the score display
-	function updateScore(){
-		if (scoreDisplay) {
-        scoreDisplay.html(`score / ${score}`);
-		}
+  function updateScore2(){
+    const scoreDisplay = document.getElementById('scoreDisplay'); // Get the score display element
+    if (scoreDisplay) {
+        scoreDisplay.innerText = `Score: ${score}`; // Update the score in the HTML
+    } else {
+        console.error('Score display element not found!');
+    }
 }
 	
 ///// Resize /////
 function resizeGameElements() {
-    const originalPositions = {
-        scoreDisplay: { x: AspectRatioWidth-85, y: 10 },
-        restartButton: { x: AspectRatioWidth/2- buttonSize -30, y: height + 90 },
-    }
+  //  const originalPositions = {
+        //restartButton: { x: AspectRatioWidth/2- buttonSize -30, y: height + 90 },
+   // }
 
-    scoreDisplay.position(originalPositions.scoreDisplay.x, originalPositions.scoreDisplay.y);
-    restartButton.position(originalPositions.restartButton.x, originalPositions.restartButton.y);
+    //restartButton.position(originalPositions.restartButton.x, originalPositions.restartButton.y);
 
-      // Recalculate positions for arrow buttons
-      //arrowButtons.up.position(width/2 - buttonSize +15, height + 15);
+      //Recalculate positions for arrow buttons
+      //arrowButtons.up.position(WindowWidth/2- buttonSize, WindowHeight-100);
       //arrowButtons.down.position(width/2 - buttonSize +15, height + buttonSize *2+15);
       //arrowButtons.left.position(width/2 - buttonSize *2 +10, height + buttonSize +15);
       //arrowButtons.right.position(width/2 + buttonSize/2 +2, height + buttonSize+15);
@@ -556,14 +547,14 @@ function resizeGameElements() {
 }
 
 function windowResized() {
-	const scaleFactor = min(windowWidth / AspectRatioWidth, windowHeight / AspectRatioHeight);
+	/*const scaleFactor = min(windowWidth / AspectRatioWidth, windowHeight / AspectRatioHeight);
     const newWidth = min(windowWidth, AspectRatioWidth);
-    const newHeight = min(windowHeight, AspectRatioHeight);
+    const newHeight = min(windowHeight, AspectRatioHeight);*/
 
     // Ensure the canvas size doesn't exceed the maximum dimensions
-    resizeCanvas(newWidth, newHeight);
-    cellSize = newHeight / gridSizeY;
-
+    resizeCanvas(windowWidth, windowHeight);
+    cellSizeX = width / gridSizeX;
+    cellSizeY = height / gridSizeY;
     // Resize UI elements
     resizeGameElements();
 }
