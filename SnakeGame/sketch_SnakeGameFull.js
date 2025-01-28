@@ -91,7 +91,7 @@ function startGame() {
       items.push(generateNonOverlappingItem());
   }
 
-  frameRate(5);
+  frameRate(7);
   createGoldFoilGraphics();
   resizeGameElements();
   gameActive = true;
@@ -151,11 +151,12 @@ function createArrowButtons() {
         width: `${buttonSize}px`,
         height: `${buttonSize}px`,
         background: 'transparent',
-        border: '2px solid rgb(255, 215, 0)',
+        border: '2px solid rgb(255,255,255)',
         borderRadius: '8px',
         textAlign: 'center',
         fontSize: `${buttonSize * 0.5}px`,
-        color: 'rgb(255, 215, 0)',
+        color: 'rgb(255,255,255)',
+        //'rgb(255, 215, 0)',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
