@@ -22,7 +22,7 @@ let restartButton;
 let saveButton;
 let arrowButtons = {}; 
 
-let buttonSize = 40;
+let buttonSize = 55;
 let xOffset, yOffset; 
 let gameActive = false;
 
