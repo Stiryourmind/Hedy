@@ -150,8 +150,8 @@ function createArrowButtons() {
 	const commonStyles = {
         width: `${buttonSize}px`,
         height: `${buttonSize}px`,
-        background: 'rgb(40,40,40)',
-        border: '2px solid rgb(150, 150, 150)',
+        background: 'transparent',
+        border: '2px solid rgb(255, 215, 0)',
         borderRadius: '8px',
         textAlign: 'center',
         fontSize: `${buttonSize * 0.5}px`,
@@ -491,28 +491,28 @@ Object.values(arrowButtons).forEach((button) => button.remove());
 	function keyPressed() {
 		if (keyCode === UP_ARROW && direction[1] === 0) {
 			direction = [0, -1];
-    	arrowButtons.up.style('background', 'rgb(150,150,150)');
+    	arrowButtons.up.style('background', 'rgba(0, 0, 0, 0.2)');
 		} else if (keyCode === DOWN_ARROW && direction[1] === 0) {
 			direction = [0, 1];
-			arrowButtons.down.style('background', 'rgb(150,150,150)');
+			arrowButtons.down.style('background', 'rgba(0, 0, 0, 0.2)');
   	} else if (keyCode === LEFT_ARROW && direction[0] === 0) {
     	direction = [-1, 0];
-    	arrowButtons.left.style('background', 'rgb(150,150,150)');
+    	arrowButtons.left.style('background', 'rgba(0, 0, 0, 0.2)');
   	} else if (keyCode === RIGHT_ARROW && direction[0] === 0) {
     	direction = [1, 0];
-    	arrowButtons.right.style('background', 'rgb(150,150,150)');
+    	arrowButtons.right.style('background', 'rgba(0, 0, 0, 0.2)');
 		}
 	}
 	
 	function keyReleased() {
   	if (keyCode === UP_ARROW) {
-    	arrowButtons.up.style('background', 'rgb(40,40,40)');
+    	arrowButtons.up.style('background', 'transparent');
   	} else if (keyCode === DOWN_ARROW) {
-    	arrowButtons.down.style('background', 'rgb(40,40,40)');
+    	arrowButtons.down.style('background', 'transparent');
   	} else if (keyCode === LEFT_ARROW) {
-    	arrowButtons.left.style('background', 'rgb(40,40,40)');
+    	arrowButtons.left.style('background', 'transparent');
   	} else if (keyCode === RIGHT_ARROW) {
-    	arrowButtons.right.style('background', 'rgb(40,40,40)');
+    	arrowButtons.right.style('background', 'transparent');
   	} else if (key === 'S' || key === 's') {
     	if (!isLooping()) {
       	saveCanvas('snake_game', 'png'); 
