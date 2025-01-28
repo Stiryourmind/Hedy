@@ -91,7 +91,7 @@ function startGame() {
       items.push(generateNonOverlappingItem());
   }
 
-  frameRate(6);
+  frameRate(5);
   createGoldFoilGraphics();
   resizeGameElements();
   gameActive = true;
